@@ -25,7 +25,7 @@ export const authConfig = {
     async signIn({ user }: { user: { email?: string | null; image?: string | null; name?: string | null } }) {
       try {
         if (!user?.email) {
-          return false;
+        return false;
         }
 
         const existingUser = await db.user.findFirst({
