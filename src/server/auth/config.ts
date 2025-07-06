@@ -24,10 +24,10 @@ export const authConfig = {
   },
   adapter:PrismaAdapter(db),
   providers: [
-      // NodemailerProvider({
-      //   server: process.env.EMAIL_SERVER,
-      //   from: process.env.EMAIL_SERVER,
-      // }),
+      NodemailerProvider({
+        server: process.env.EMAIL_SERVER,
+        from: process.env.EMAIL_SERVER,
+      }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
