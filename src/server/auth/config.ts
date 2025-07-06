@@ -1,5 +1,7 @@
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import NodemailerProvider from "next-auth/providers/nodemailer";
+
 
 import { db } from "~/server/db";
 
@@ -16,16 +18,31 @@ export const authConfig = {
     strategy: "jwt",
   },
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    }),
-  ],
+
+  NodemailerProvider({
+    server: process.env.EMAIL_SERVER,
+    from: process.env.EMAIL_SERVER,
+  }),
+  GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+  })
+],
+
+
   callbacks: {
-    async signIn({ user }: { user: { email?: string | null; image?: string | null; name?: string | null } }) {
+    async signIn({
+      user,
+    }: {
+      user: {
+        email?: string | null;
+       
+        name?: string | null;
+      };
+    }) {
       try {
         if (!user?.email) {
-        return false;
+          return false;
         }
 
         const existingUser = await db.user.findFirst({
@@ -43,7 +60,7 @@ export const authConfig = {
           data: {
             email: user.email,
             name: user.name ?? "",
-            image: user.image ?? ""
+            image:  "",
           },
         });
 
