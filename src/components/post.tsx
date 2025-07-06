@@ -1,5 +1,5 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import React from "react";
 
 const CompPost = () => {
@@ -7,6 +7,9 @@ const CompPost = () => {
     <div>
       <button onClick={() => signIn("google", { callbackUrl: "/" ,})}>
         Sign In
+      </button>
+      <button onClick={() => signOut({callbackUrl: "/"})}>
+        Sign out
       </button>
     
     </div>
