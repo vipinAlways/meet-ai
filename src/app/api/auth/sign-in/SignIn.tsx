@@ -6,10 +6,12 @@ import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
 const SignIn = () => {
+
+  //TODO:make sure email works fine 
   const [email, setEmail] = useState<string>("");
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    
+
     try {
       if (email !== "") {
         signIn("nodemailer", { email, callbackUrl: "/" });

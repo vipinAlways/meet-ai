@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import NodemailerProvider from "next-auth/providers/nodemailer";
 
 import { db } from "~/server/db";
+import { clearVerificationTokens } from "./clearVerificationTokens";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -39,6 +40,7 @@ export const authConfig = {
 
     async jwt({ token, user }) {
       if (user) {
+        await clearVerificationTokens()
         return{
           ...token,
           id : user.id,
