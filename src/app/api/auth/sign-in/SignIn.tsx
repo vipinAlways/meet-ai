@@ -20,7 +20,9 @@ const SignIn = () => {
   };
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+        <input type="text" id="name" placeholder="Enter Your Name" />
+        
         <input
           type="email"
           placeholder="Email"
