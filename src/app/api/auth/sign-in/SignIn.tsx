@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
+import { dot } from "node:test/reporters";
+import { api } from "~/trpc/react";
 
 interface SignInProps {
   email: string;
   password: string;
   name: string;
 }
+//TODO:complete the auth one
 
 const SignIn = () => {
   //TODO:make sure email works fine
@@ -18,30 +21,27 @@ const SignIn = () => {
     password: "",
     name: "",
   });
-   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-   
+  const mutation = api.user.newUser.useMutation({
+    onSuccess: () =>
+      signIn("email", {
+        email: authProp.email,
+        callbackUrl: "/",
+      }),
+  });
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      mutation.mutate({
+        userName: authProp.name,
+        email: authProp.email,
+        password: authProp.password,
+      });
+    },
+    [authProp, mutation],
+  );
 
-    // Call API to save pending user
-    const res = await fetch("/api/auth/pending-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(authProp),
-    });
+  // setStatus("✅ Check your email for the magic login link.");
 
-    if (!res.ok) {
-      // setStatus("Account already exists or something went wrong.");
-      return;
-    }
-
-    // Send magic link
-    await signIn("email", {
-      email: authProp.email,
-      callbackUrl: "/",
-    });
-
-    // setStatus("✅ Check your email for the magic login link.");
-  };
   return (
     <div>
       <form
@@ -53,7 +53,7 @@ const SignIn = () => {
             User Name
           </label>
           <input
-            className="rounded-md border p-2 focus:border-green-500 focus:outline-none"
+            className="rounded-md border p-2 focus:border-blue-500 focus:outline-none"
             type="text"
             id="name"
             placeholder="Enter Your Name"
@@ -66,7 +66,7 @@ const SignIn = () => {
         <div className="flex flex-col gap-2">
           <label htmlFor="password">Password</label>
           <input
-            className="rounded-md border p-2 focus:border-green-500 focus:outline-none"
+            className="rounded-md border p-2 focus:border-blue-500 focus:outline-none"
             type="password"
             id="password"
             placeholder="Password"
@@ -80,7 +80,7 @@ const SignIn = () => {
         <div className="flex flex-col gap-2">
           <label htmlFor="email">Email</label>
           <input
-            className="rounded-md border p-2 focus:border-green-500 focus:outline-none"
+            className="rounded-md border p-2 focus:border-blue-500 focus:outline-none"
             id="email"
             type="email"
             placeholder="Email"
@@ -92,7 +92,7 @@ const SignIn = () => {
         </div>
         <button
           type="submit"
-          className="rounded-md bg-green-600 px-4 py-2 text-zinc-100"
+          className="rounded-md bg-blue-600 px-4 py-2 text-zinc-100"
         >
           Sign In
         </button>
@@ -102,7 +102,7 @@ const SignIn = () => {
         onClick={() => {
           signIn("google", { callbackUrl: "/" });
         }}
-        className="mt-4 flex items-center justify-center rounded-md bg-green-600 p-2 text-lg text-white shadow-md transition-colors hover:bg-green-500 sm:text-xl"
+        className="mt-4 flex items-center justify-center rounded-md bg-blue-600 p-2 text-lg text-white shadow-md transition-colors hover:bg-blue-500 sm:text-xl"
       >
         Sign in with Google <FcGoogle />
       </button>
