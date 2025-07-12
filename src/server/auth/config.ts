@@ -1,11 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import EmailProvider from "next-auth/providers/email";
-import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcrypt";
 import NodemailerProvider from "next-auth/providers/nodemailer";
-
 import { db } from "~/server/db";
 import { clearVerificationTokens } from "./clearVerificationTokens";
 
@@ -29,8 +25,8 @@ export const authConfig = {
   adapter: PrismaAdapter(db),
   providers: [
     NodemailerProvider({
-      server: process.env.EMAIL_SERVER,
-      from: process.env.EMAIL_FROM,
+      server: process.env.EMAIL_SERVER ?? "",
+      from: process.env.EMAIL_SERVER ?? "",
     }),
 
     GoogleProvider({
@@ -62,8 +58,5 @@ export const authConfig = {
         },
       };
     },
-
-
-   
   },
 } satisfies NextAuthConfig;

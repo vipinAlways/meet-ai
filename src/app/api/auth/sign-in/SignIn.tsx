@@ -9,8 +9,7 @@ import { api } from "~/trpc/react";
 
 interface SignInProps {
   email: string;
-  password: string;
-  name: string;
+  disable:boolean
 }
 //TODO:complete the auth one
 
@@ -18,29 +17,22 @@ const SignIn = () => {
   //TODO:make sure email works fine
   const [authProp, setAuthProp] = useState<SignInProps>({
     email: "",
-    password: "",
-    name: "",
+    disable:false
   });
-  const mutation = api.user.newUser.useMutation({
-    onSuccess: () =>
-      signIn("email", {
-        email: authProp.email,
-        callbackUrl: "/",
-      }),
-  });
+
+
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
-      mutation.mutate({
-        userName: authProp.name,
+      signIn("nodemailer", {
         email: authProp.email,
-        password: authProp.password,
+        callbackUrl: "/profile",
       });
+      setAuthProp((prev)=>({...prev,boolean:true}))
     },
-    [authProp, mutation],
+    [authProp],
   );
 
-  // setStatus("✅ Check your email for the magic login link.");
 
   return (
     <div>
@@ -48,34 +40,6 @@ const SignIn = () => {
         onSubmit={handleSubmit}
         className="flex flex-col items-center gap-4 rounded-lg p-8 text-lg shadow-md transition-colors sm:text-xl"
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="name" className="font-semibold">
-            User Name
-          </label>
-          <input
-            className="rounded-md border p-2 focus:border-blue-500 focus:outline-none"
-            type="text"
-            id="name"
-            placeholder="Enter Your Name"
-            value={authProp.name}
-            onChange={(e) =>
-              setAuthProp((prev) => ({ ...prev, name: e.target.value }))
-            }
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="password">Password</label>
-          <input
-            className="rounded-md border p-2 focus:border-blue-500 focus:outline-none"
-            type="password"
-            id="password"
-            placeholder="Password"
-            value={authProp.password}
-            onChange={(e) =>
-              setAuthProp((prev) => ({ ...prev, password: e.target.value }))
-            }
-          />
-        </div>
 
         <div className="flex flex-col gap-2">
           <label htmlFor="email">Email</label>
@@ -88,6 +52,7 @@ const SignIn = () => {
             onChange={(e) =>
               setAuthProp((prev) => ({ ...prev, email: e.target.value }))
             }
+            disabled={authProp.disable}
           />
         </div>
         <button
@@ -97,7 +62,7 @@ const SignIn = () => {
           Sign In
         </button>
       </form>
-
+            <div className="text-center">Or</div>
       <button
         onClick={() => {
           signIn("google", { callbackUrl: "/" });
