@@ -1,46 +1,55 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useCallback, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
-import { dot } from "node:test/reporters";
 import { api } from "~/trpc/react";
 
 interface SignInProps {
   email: string;
-  disable:boolean
+  disable: boolean;
 }
-//TODO:complete the auth one
 
 const SignIn = () => {
-  //TODO:make sure email works fine
   const [authProp, setAuthProp] = useState<SignInProps>({
     email: "",
-    disable:false
+    disable: false,
   });
 
-
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      signIn("nodemailer", {
-        email: authProp.email,
-        callbackUrl: "/profile",
-      });
-      setAuthProp((prev)=>({...prev,boolean:true}))
-    },
-    [authProp],
+  const userQuery = api.user.existingUser.useQuery(
+    { email: authProp.email },
+    {
+      enabled: !!authProp.email && authProp.email.includes("@"),
+    }
   );
 
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      if (!authProp.email.includes("@")) {
+        alert("Please enter a valid email");
+        return;
+      }
+
+      const isExistingUser = userQuery.data;
+
+      signIn("nodemailer", {
+        email: authProp.email,
+        callbackUrl: isExistingUser ? "/" : "/profile",
+      });
+
+      setAuthProp((prev) => ({ ...prev, disable: true }));
+    },
+    [authProp.email, userQuery.data]
+  );
 
   return (
-    <div>
+    <div className="flex items-center justify-center flex-col p-2 h-96">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center gap-4 rounded-lg p-8 text-lg shadow-md transition-colors sm:text-xl"
       >
-
         <div className="flex flex-col gap-2">
           <label htmlFor="email">Email</label>
           <input
@@ -58,11 +67,12 @@ const SignIn = () => {
         <button
           type="submit"
           className="rounded-md bg-blue-600 px-4 py-2 text-zinc-100"
+          disabled={authProp.disable}
         >
           Sign In
         </button>
       </form>
-            <div className="text-center">Or</div>
+      <div className="text-center">Or</div>
       <button
         onClick={() => {
           signIn("google", { callbackUrl: "/" });

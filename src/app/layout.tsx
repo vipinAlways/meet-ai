@@ -21,11 +21,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`h-full ${geist.variable}`}>
-      <body className="w-screen min-h-screen">
+    <html lang="en" className={`min-h-screen ${geist.variable}`}>
+      <body className="h-full">
         <TRPCReactProvider >
           <Navbar/>
-          <main className="h-full w-full">
+          <main className="w-full">
           {children}
           </main>
           </TRPCReactProvider>
