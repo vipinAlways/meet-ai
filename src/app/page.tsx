@@ -8,9 +8,9 @@ export default async function Home() {
   return (
     <HydrateClient>
    <main className="p-4">
-      <h1 className="text-green-500">hello</h1>
+     
 
-      <Button className="bg-green-400">
+      <Button className="">
         Click Me 
       </Button>
       <Link href={"/api/auth/sign-in"}>sign in </Link>

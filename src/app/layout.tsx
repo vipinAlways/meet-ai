@@ -24,8 +24,8 @@ export default function RootLayout({
     <html lang="en" className={`min-h-screen ${geist.variable}`}>
       <body className="h-full">
         <TRPCReactProvider >
+          <main className="w-full flex">
           <Navbar/>
-          <main className="w-full">
           {children}
           </main>
           </TRPCReactProvider>
