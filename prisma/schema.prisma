@@ -14,8 +14,7 @@ model User {
     id            String    @id @default(cuid())
     name          String?
     email         String?   @unique
-    password       String?
-    image         String?
+    image         String?   @default("")
     emailVerified  DateTime?
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt

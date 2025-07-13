@@ -123,3 +123,48 @@
     @apply bg-background text-foreground;
   }
 }
+.check {
+  width: 120px;
+  height: 120px;
+  display: inline-block;
+}
+
+.circle {
+  transform: rotate(-90deg); /* makes it start from the top */
+}
+
+circle {
+  fill: none;
+  
+  stroke-width: 10;
+  stroke-dasharray: 316; 
+ 
+  animation: circle 1s linear  forwards ;
+}
+
+
+@keyframes circle {
+  0%{
+    stroke-dashoffset: 315;
+   }
+  100%{
+    stroke-dashoffset:0 ;
+  }
+}
+
+@keyframes tick {
+  0%{
+    opacity: 0;
+   }
+  100%{
+    opacity:1 ;
+  }
+}
+
+.check circle {
+  stroke-dashoffset: 0;
+}
+.tick{
+  animation: tick 0.9s ease-out  forwards;
+}
+
