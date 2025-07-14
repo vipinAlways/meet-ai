@@ -1,11 +1,10 @@
-//TODO:compelete the route and the profile page too
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { TiTick } from "react-icons/ti";
 
 const page = () => {
   return (
-    <div className="flex h-[50vh] w-full items-center justify-center ">
+    <div className="flex min-h-screen w-full items-center justify-center ">
       <div className="flex h-fit max-w-xl flex-col items-center justify-center gap-4 rounded-lg p-5 text-xl text-nowrap shadow-md transition-colors bg-zinc-300 ">
         <div className="group relative flex items-center justify-center">
           <svg width="120" height="120" className="circle">

@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { MdOutlineEmergencyRecording } from "react-icons/md";
+import { MdOutlineEmergencyRecording, MdOutlineSupportAgent } from "react-icons/md";
 
 
 const Navbar = () => {
   return (
-    <div className="h-screen w-60 bg-blue-950 px-6 py-2">
-      <aside>
+    <div className="h-screen w-72 bg-blue-950 px-4 py-2">
+      <aside className="flex gap-4 justify-center flex-col">
         <Link
           href={"/"}
           className="flex w-fit items-center justify-center gap-1.5"
@@ -22,8 +22,9 @@ const Navbar = () => {
           <span className="text-3xl text-zinc-100">Meet.AI</span>
         </Link>
 
-        <div>
-          <Link href={"meetings"} className="flex items-center "><MdOutlineEmergencyRecording/> Meetings</Link>
+        <div className="py-3 border-t border-zinc-300 flex flex-col gap-4 border-b">
+          <Link href={"/meetings"} className="flex items-center text-xl gap-2 text-zinc-300"><MdOutlineEmergencyRecording className="w-8 h-8"/> Meetings</Link>
+          <Link href={"/agents"} className="flex items-center text-xl gap-2 text-zinc-300"><MdOutlineSupportAgent  className="w-8 h-8"/> Agents</Link>
         </div>
       </aside>
     </div>
