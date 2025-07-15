@@ -21,7 +21,7 @@ export const authConfig = {
     maxAge: 30 * 24 * 60 * 60,
   },
   pages:{
-    signIn: "/api/auth/sign-in",
+    signIn: "/api/auth/authentication",
   },
   adapter:PrismaAdapter(db),
   providers: [

@@ -1,17 +1,24 @@
 "use client";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
+import { Button } from "./ui/button";
+import { IoIosLogOut } from "react-icons/io";
+import Link from "next/link";
 
 const CompPost = () => {
+  const {data} = useSession();
+  console.log(data);
   return (
     <div>
-      <button onClick={() => signIn("google", { callbackUrl: "/" ,})}>
-        Sign In
-      </button>
-      <button onClick={() => signOut({callbackUrl: "/"})}>
-        Sign out
-      </button>
-    
+      {data ? (
+        <Button onClick={() => signOut({ callbackUrl: "/" })}>
+          <IoIosLogOut /> Sign out
+        </Button>
+      ) : (
+        <Link href={"/api/auth/authentication"} >
+          Join Us
+        </Link>
+      )}
     </div>
   );
 };

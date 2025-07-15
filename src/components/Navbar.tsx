@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -26,9 +27,12 @@ const Navbar = () => {
           <Link href={"/meetings"} className="flex items-center text-xl gap-2 text-zinc-300"><MdOutlineEmergencyRecording className="w-8 h-8"/> Meetings</Link>
           <Link href={"/agents"} className="flex items-center text-xl gap-2 text-zinc-300"><MdOutlineSupportAgent  className="w-8 h-8"/> Agents</Link>
         </div>
-      </aside>
+        <div>
+
+        </div>
+      </aside> 
     </div>
   );
-};
+}; 
 
 export default Navbar;
