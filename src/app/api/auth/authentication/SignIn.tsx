@@ -48,7 +48,7 @@ const SignIn = () => {
 
   return (
     <section className="flex min-h-screen w-full items-center justify-center bg-zinc-300">
-      <div className="flex items-stretch  h-96 ">
+      <div className="flex items-stretch   h-96 ">
         <div className="flex w-96 flex-1 flex-col items-center justify-center  rounded-tl-lg rounded-bl-lg bg-white">
           <h1 className="text-center text-xl font-semibold sm:text-2xl">
             Welcome to Meet.AI
@@ -82,21 +82,21 @@ const SignIn = () => {
             </Button>
           </form>
 
-          <div className="text-center">Or</div>
+          <div className="text-center">Or With</div>
 
           <Button
             onClick={() =>
               signIn("google", {
-                callbackUrl: userQuery.data ? "/" : "/profile",
+                callbackUrl: "/"  ,
               })
             }
-            className="mt-4 flex items-center justify-center gap-2 p-1  sm:text-xl "
+            className="mt-4 flex items-center justify-center gap-2 p-2.5  sm:text-2xl "
           >
             Sign in with Google <FcGoogle/>
           </Button>
         </div>
 
-        <div className="flex w-96 flex-1 flex-col items-center justify-center gap-4 border bg-blue-800  rounded-tr-lg rounded-br-lg">
+        <div className="md:flex w-96 flex-1 flex-col items-center justify-center gap-4 border bg-blue-800  rounded-tr-lg rounded-br-lg hidden">
           <Image
             src="/svgs/logo.svg"
             alt="logo"

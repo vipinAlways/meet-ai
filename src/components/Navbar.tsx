@@ -1,14 +1,21 @@
-"use client"
+"use client";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { MdOutlineEmergencyRecording, MdOutlineSupportAgent } from "react-icons/md";
-
+import {
+  MdOutlineEmergencyRecording,
+  MdOutlineSupportAgent,
+} from "react-icons/md";
+import { Button } from "./ui/button";
+import { IoIosLogOut } from "react-icons/io";
 
 const Navbar = () => {
+
+  const {data} = useSession();
   return (
-    <div className="h-screen w-72 bg-blue-950 px-4 py-2">
-      <aside className="flex gap-4 justify-center flex-col">
+    <div className="hidden h-screen w-72 bg-blue-800 px-4 py-2 md:flex flex-col justify-between">
+      <aside className="flex flex-col justify-center gap-4">
         <Link
           href={"/"}
           className="flex w-fit items-center justify-center gap-1.5"
@@ -23,16 +30,33 @@ const Navbar = () => {
           <span className="text-3xl text-zinc-100">Meet.AI</span>
         </Link>
 
-        <div className="py-3 border-t border-zinc-300 flex flex-col gap-4 border-b">
-          <Link href={"/meetings"} className="flex items-center text-xl gap-2 text-zinc-300"><MdOutlineEmergencyRecording className="w-8 h-8"/> Meetings</Link>
-          <Link href={"/agents"} className="flex items-center text-xl gap-2 text-zinc-300"><MdOutlineSupportAgent  className="w-8 h-8"/> Agents</Link>
+        <div className="flex flex-col gap-4 border-t border-b border-zinc-300 py-3">
+          <Link
+            href={"/meetings"}
+            className="flex items-center gap-2 text-xl text-zinc-300"
+          >
+            <MdOutlineEmergencyRecording className="h-8 w-8" /> Meetings
+          </Link>
+          <Link
+            href={"/agents"}
+            className="flex items-center gap-2 text-xl text-zinc-300"
+          >
+            <MdOutlineSupportAgent className="h-8 w-8" /> Agents
+          </Link>
         </div>
-        <div>
-
-        </div>
-      </aside> 
+        <div></div>
+      </aside>
+      <div className="w-fullss">
+        {data ? (
+          <Button onClick={() => signOut({ callbackUrl: "/" })}>
+            <IoIosLogOut /> Sign out
+          </Button>
+        ) : (
+          <Link href={"/api/auth/authentication"}>Join Us</Link>
+        )}
+      </div>
     </div>
   );
-}; 
+};
 
 export default Navbar;

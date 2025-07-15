@@ -25,9 +25,11 @@ export default function RootLayout({
     <html lang="en" className={`min-h-screen ${geist.variable}`}>
       <body className="h-full">
         <Provider >
-          <main className="w-full flex">
+          <main className="w-full flex ">
           <Navbar/>
-          {children}
+          <div className="h-full w-full">
+            {children}
+          </div>
           </main>
           </Provider>
       </body>
