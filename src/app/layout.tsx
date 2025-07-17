@@ -2,9 +2,6 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
-
-import { TRPCReactProvider } from "~/trpc/react";
-import Navbar from "~/components/Navbar";
 import Provider from "~/components/Provider";
 
 export const metadata: Metadata = {
@@ -26,10 +23,9 @@ export default function RootLayout({
       <body className="h-full">
         <Provider >
           <main className="w-full flex ">
-          <Navbar/>
-          <div className="h-full w-full">
+        
             {children}
-          </div>
+          
           </main>
           </Provider>
       </body>
