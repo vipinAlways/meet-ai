@@ -10,9 +10,21 @@ import {
 import { Button } from "./ui/button";
 import { IoIosLogOut } from "react-icons/io";
 import { BotIcon, StarIcon, VideoIcon } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "./ui/sidebar";
+import { cn } from "~/lib/utils";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathName = usePathname()
   const firstSection = [
     {
       icon: VideoIcon,
@@ -79,7 +91,10 @@ const Navbar = () => {
     // </div>
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">
-        <Link href={"/"} className="flex items-center gap-4 px-2 pt-2 border-b-2  pb-4">
+        <Link
+          href={"/"}
+          className="flex items-center gap-4 border-b-2 px-2 pt-2 pb-4"
+        >
           <Image
             src={"/svgs/logo.svg"}
             alt="logo"
@@ -93,19 +108,25 @@ const Navbar = () => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-              <SidebarMenu>
-                {firstSection.map((item,index)=>(
-                  <SidebarMenuItem key={index}>
-                    <SidebarMenuButton>
-                      <Link href={item.href}>
+            <SidebarMenu>
+              {firstSection.map((item, index) => (
+                <SidebarMenuItem key={index}>
+                  <SidebarMenuButton
+                    asChild
+                    className={cn(
+                      "from-sidebar-accent via-sidebar/50 to-sidebar/50 h-10 border border-transparent from-5% via-30% hover:border-blue-400/10 hover:bg-linear-to-r/oklch",pathName === item.href && " bg-linear-to-r/oklch border-blue-800"
+                    )}
+                  >
+                    <Link href={item.href} className="flex gap-2">
+                      <item.icon className="size-5" />
                       <span className="text-sm font-medium tracking-tight">
-                        {item.label }
+                        {item.label}
                       </span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

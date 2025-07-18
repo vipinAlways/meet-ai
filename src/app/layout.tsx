@@ -21,13 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`min-h-screen ${geist.variable}`}>
       <body className="h-full">
-        <Provider >
-          <main className="w-full flex ">
-        
-            {children}
-          
-          </main>
-          </Provider>
+        <Provider>
+          <main className="flex w-full">{children}</main>
+        </Provider>
       </body>
     </html>
   );
