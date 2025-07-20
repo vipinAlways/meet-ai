@@ -1,8 +1,10 @@
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import {  Inter } from "next/font/google";
 import Provider from "~/components/Provider";
+
+import SearchBar from "~/components/SearchBar";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -10,18 +12,19 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const geist = Geist({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+
 });
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`min-h-screen ${geist.variable}`}>
+    <html lang="en" className={`min-h-screen ${inter.className}`}>
       <body className="h-full">
         <Provider>
+        
           <main className="flex w-full">{children}</main>
         </Provider>
       </body>

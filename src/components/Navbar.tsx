@@ -7,8 +7,6 @@ import {
   MdOutlineEmergencyRecording,
   MdOutlineSupportAgent,
 } from "react-icons/md";
-import { Button } from "./ui/button";
-import { IoIosLogOut } from "react-icons/io";
 import { BotIcon, StarIcon, VideoIcon } from "lucide-react";
 import {
   Sidebar,
