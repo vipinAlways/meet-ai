@@ -90,13 +90,13 @@ const SignIn = () => {
                 callbackUrl: "/"  ,
               })
             }
-            className="mt-4 flex items-center justify-center gap-2 p-2.5  sm:text-2xl "
+            className="mt-4 flex items-center justify-center gap-2 p-2.5  sm:text-xl "
           >
             Sign in with Google <FcGoogle/>
           </Button>
         </div>
 
-        <div className="md:flex w-96 flex-1 flex-col items-center justify-center gap-4 border bg-blue-800  rounded-tr-lg rounded-br-lg hidden">
+        <div className="md:flex w-96 flex-1 flex-col items-center from-sidebar-accent to-sidebar justify-center gap-4 border bg-radial rounded-tr-lg rounded-br-lg hidden">
           <Image
             src="/svgs/logo.svg"
             alt="logo"

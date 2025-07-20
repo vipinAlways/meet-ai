@@ -23,7 +23,7 @@ import {
 } from "./ui/sidebar";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import UserButton from "./UserButton";
+import {UserButton} from "./UserButton";
 
 const Navbar = () => {
   const pathName = usePathname();
