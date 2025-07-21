@@ -5,30 +5,30 @@ import { PanelLeftCloseIcon, PanelLeftIcon, SearchIcon } from "lucide-react";
 import { useSidebar } from "./ui/sidebar";
 import { CiSearch } from "react-icons/ci";
 import DashboarCommand from "./DashboarCommand";
-import { set } from "zod";
-import { doc } from "prettier";
+
 
 const SearchBar = () => {
   const { state, toggleSidebar, isMobile } = useSidebar();
-  const [open, setOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
 
 
   useEffect(()=>{
     const down =(e:KeyboardEvent) => {
       if(e.key === "k" && (e.metaKey || e.ctrlKey)){
         e.preventDefault()
-        setOpen((prev) => !prev);
+        setCommandOpen((open) => !open);
+        console.log("keypress");
       }
     }
 
     document.addEventListener("keydown", down);
 
     return ()=>document.removeEventListener("keydown", down);
-  })
+  },[])
   
   return (
  <>
-    <DashboarCommand open={open} setOpen={setOpen}/>
+    <DashboarCommand open={commandOpen} setOpen={setCommandOpen}/>
     <nav className="bg-background flex items-center gap-x-2 border-b px-4 py-3 text-white">
       <Button
         className="size-9 text-black"
@@ -46,7 +46,7 @@ const SearchBar = () => {
         variant={"outline"}
         size="sm"
         className="flex h-9 w-[240px] justify-start text-muted-foreground hover:text-muted-foreground font-normal bg-background"
-        onClick={()=>setOpen(!open)}
+        onClick={()=>setCommandOpen(!open)}
       >
         <CiSearch />
         Search

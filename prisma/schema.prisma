@@ -15,15 +15,13 @@ model User {
     name          String?
     email         String?   @unique
     image         String?   @default("")
-    emailVerified  DateTime?
+    emailVerified DateTime?
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
     sessions      Session[]
     accounts      Account[]
+    agents        agents[]
 }
-
-
-
 
 model Account {
     id                String  @id @default(uuid())
@@ -63,4 +61,14 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model agents {
+    id          String   @id @default(uuid())
+    name        String
+    userId      String
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    intructions String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @default(now())
 }

@@ -17,8 +17,8 @@ interface Props{
 }
 const DashboarCommand = ({open,setOpen}:Props) => {
   return (
-    <CommandDialog>
-        <CommandInput placeholder ="Find a meeting or agent"/>
+    <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput  placeholder ="Find a meeting or agent"/>
         <CommandList>
             <CommandItem>
                 Test
