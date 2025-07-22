@@ -1,13 +1,19 @@
-
-import z from "zod";
+import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 
 export const agentsRoute = createTRPCRouter({
-        getMany :publicProcedure.input(z.object({
-            text:z.string()
-        })).query(async()=>{
-            const data = await db.agents.findMany({})
-            return data
-        })
-})
+  getMany: publicProcedure.query(async () => {
+    try {
+      const data = await db.agents.findMany();
+        
+      return data;
+    } catch (error) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch agents",
+        cause: error,
+      });
+    }
+  }),
+});

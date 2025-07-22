@@ -1,4 +1,4 @@
-import { AvatarImage, Avatar } from "@radix-ui/react-avatar";
+
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "~/components/ui/button";
@@ -31,6 +31,8 @@ import GeneratedAvatar from "./GeneratedAvatar";
 import { ChevronDownIcon, CreditCardIcon, LogOut } from "lucide-react";
 import { useIsMobile } from "~/hooks/use-mobile";
 
+import { Avatar, AvatarImage } from "./ui/avatar";
+
 export const UserButton = () => {
   const { data } = useSession();
   const isMobile = useIsMobile();
@@ -46,7 +48,7 @@ export const UserButton = () => {
         >
           {data.user.image ? (
             <Avatar>
-              <AvatarImage src={data.user.image || ""} />
+              <AvatarImage src={data.user.image || ""}  alt="avatar" className="rounded-full "/>
             </Avatar>
           ) : (
             <GeneratedAvatar
@@ -77,7 +79,10 @@ export const UserButton = () => {
               <CreditCardIcon className="size-4 text-black" />
               Billing
             </Button>
-            <Button variant={"outline"} onClick={() => signOut({callbackUrl:"/"})}>
+            <Button
+              variant={"outline"}
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
               <LogOut className="size-4 text-black" />
               Logout
             </Button>
