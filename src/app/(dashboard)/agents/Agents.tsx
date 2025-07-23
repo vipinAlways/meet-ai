@@ -1,28 +1,43 @@
 "use client";
 
 import { Ban } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { TiEject } from "react-icons/ti";
 import LoadingState from "~/components/LoadingState";
+import ResponsiveDialog from "~/components/ResponsiveDialog";
+import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 
 const Agents = () => {
+  const [open,setOpen]  = useState(true)
   const [data] = api.agents.getMany.useSuspenseQuery();
 
   if (!data || data?.length === 0)
     return (
+   <ResponsiveDialog
+        title="REsjdls"
+        description="djsk"
+        open
+        onOpenChange={() => {}}
+      >
       <LoadingState
         title="No Agents Found"
         description="Please add an agent to get started."
-        Icon= {Ban}
-        
+        Icon={Ban}
       />
+      </ResponsiveDialog>
     );
 
   return (
     <div>
-      {data.map((agent) => (
-        <div key={agent.id}>{agent.name}</div>
-      ))}
+      <ResponsiveDialog
+        title="REsjdls"
+        description="djsk"
+        open={open}
+        onOpenChange={() => {setOpen(!open)}}
+      >
+        <Button>some thing <TiEject/></Button>
+      </ResponsiveDialog>
     </div>
   );
 };

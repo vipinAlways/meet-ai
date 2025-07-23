@@ -17,7 +17,7 @@ const SearchBar = () => {
       if(e.key === "k" && (e.metaKey || e.ctrlKey)){
         e.preventDefault()
         setCommandOpen((open) => !open);
-        console.log("keypress");
+       
       }
     }
 
@@ -46,7 +46,7 @@ const SearchBar = () => {
         variant={"outline"}
         size="sm"
         className="flex h-9 w-[240px] justify-start text-muted-foreground hover:text-muted-foreground font-normal bg-background"
-        onClick={()=>setCommandOpen(!open)}
+        onClick={()=>setCommandOpen(!commandOpen)}
       >
         <CiSearch />
         Search
