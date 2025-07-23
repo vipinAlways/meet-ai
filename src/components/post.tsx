@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const CompPost = () => {
   const {data} = useSession();
-  console.log(data);
+  console.log(data?.user.id);
   return (
     <div>
       {data ? (

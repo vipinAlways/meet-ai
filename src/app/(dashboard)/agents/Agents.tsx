@@ -17,8 +17,8 @@ const Agents = () => {
    <ResponsiveDialog
         title="REsjdls"
         description="djsk"
-        open
-        onOpenChange={() => {}}
+        open={open}
+        onOpenChange={() => setOpen(!open)}
       >
       <LoadingState
         title="No Agents Found"

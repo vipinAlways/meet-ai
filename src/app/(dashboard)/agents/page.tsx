@@ -3,10 +3,13 @@ import Agents from "./Agents";
 import { Suspense } from "react";
 import LoadingState from "~/components/LoadingState";
 import { Loader2Icon } from "lucide-react";
+import AgentsListHeader from "~/components/AgentsListHeader";
 
 const Page = async () => {
   await api.agents.getMany.prefetch();
   return (
+  <>
+  <AgentsListHeader/>
     <HydrateClient>
       <Suspense
         fallback={
@@ -21,6 +24,7 @@ const Page = async () => {
         <Agents />
       </Suspense>
     </HydrateClient>
+  </>
   );
 };
 export default Page;
