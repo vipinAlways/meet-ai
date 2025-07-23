@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { PanelLeftCloseIcon, PanelLeftIcon, SearchIcon } from "lucide-react";
+import { PanelLeftCloseIcon, PanelLeftIcon } from "lucide-react";
 import { useSidebar } from "./ui/sidebar";
 import { CiSearch } from "react-icons/ci";
 import DashboarCommand from "./DashboarCommand";

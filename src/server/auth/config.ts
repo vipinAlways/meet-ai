@@ -20,15 +20,15 @@ export const authConfig = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
-  pages:{
+  pages: {
     signIn: "/api/auth/authentication",
   },
-  adapter:PrismaAdapter(db),
+  adapter: PrismaAdapter(db),
   providers: [
-      NodemailerProvider({
-        server: process.env.EMAIL_SERVER,
-        from: process.env.EMAIL_FROM,
-      }),
+    NodemailerProvider({
+      server: process.env.EMAIL_SERVER,
+      from: process.env.EMAIL_FROM,
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
@@ -37,30 +37,25 @@ export const authConfig = {
   ],
 
   callbacks: {
-
     async jwt({ token, user }) {
       if (user) {
-        await clearVerificationTokens()
-        return{
+        await clearVerificationTokens();
+        return {
           ...token,
-          id : user.id,
-        }
+          id: user.id,
+        };
       }
       return token;
     },
 
     async session({ session, token }) {
-      console.log("session callbacl called",{session,token});
-
       return {
-          ...session,
-          user:{
-            ...session.user,
-            id:token.id as string,
-
-          }
-      }
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id as string,
+        },
+      };
     },
-
   },
 } satisfies NextAuthConfig;

@@ -1,5 +1,6 @@
 "use client";
 
+import { Ban } from "lucide-react";
 import React from "react";
 import LoadingState from "~/components/LoadingState";
 import { api } from "~/trpc/react";
@@ -12,6 +13,8 @@ const Agents = () => {
       <LoadingState
         title="No Agents Found"
         description="Please add an agent to get started."
+        Icon= {Ban}
+        
       />
     );
 

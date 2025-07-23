@@ -5,21 +5,14 @@ import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
@@ -70,7 +63,7 @@ export const UserButton = () => {
 
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>{data.user.name || ""}</DrawerTitle>
+            <DrawerTitle>{data.user.name ?? ""}</DrawerTitle>
             <DrawerDescription>{data.user.email}</DrawerDescription>
           </DrawerHeader>
 

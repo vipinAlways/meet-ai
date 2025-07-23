@@ -36,7 +36,7 @@ const SignIn = () => {
 
       const isExistingUser = userQuery.data;
 
-      signIn("nodemailer", {
+      await signIn("nodemailer", {
         email: authProp.email,
         callbackUrl: isExistingUser ? "/" : "/profile",
       });

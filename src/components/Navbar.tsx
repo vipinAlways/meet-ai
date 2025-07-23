@@ -1,12 +1,7 @@
 "use client";
-import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {
-  MdOutlineEmergencyRecording,
-  MdOutlineSupportAgent,
-} from "react-icons/md";
 import { BotIcon, StarIcon, VideoIcon } from "lucide-react";
 import {
   Sidebar,
@@ -45,7 +40,6 @@ const Navbar = () => {
     },
   ];
 
-  const { data } = useSession();
   return (
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">

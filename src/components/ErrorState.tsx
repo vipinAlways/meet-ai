@@ -1,4 +1,4 @@
-import { AlertCircleIcon, Loader2, Loader2Icon } from "lucide-react";
+import { AlertCircleIcon} from "lucide-react";
 import React from "react";
 
 interface Props {

@@ -4,7 +4,7 @@ import { type Metadata } from "next";
 import {  Inter } from "next/font/google";
 import Provider from "~/components/Provider";
 
-import SearchBar from "~/components/SearchBar";
+
 
 export const metadata: Metadata = {
   title: "Create T3 App",
