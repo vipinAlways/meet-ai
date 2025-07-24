@@ -3,6 +3,8 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import {  Inter } from "next/font/google";
 import Provider from "~/components/Provider";
+import { Toaster } from "~/components/ui/sonner";
+
 
 
 
@@ -24,7 +26,7 @@ export default function RootLayout({
     <html lang="en" className={`min-h-screen ${inter.className}`}>
       <body className="h-full">
         <Provider>
-        
+          <Toaster/>
           <main className="flex w-full">{children}</main>
         </Provider>
       </body>

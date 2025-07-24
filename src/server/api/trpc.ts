@@ -8,6 +8,7 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
+import { NextResponse } from "next/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -109,11 +110,12 @@ export const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session?.user) {
+      NextResponse.redirect("/api/auth/authentication");
       throw new TRPCError({ code: "UNAUTHORIZED" });
     }
     return next({
       ctx: {
-        // infers the `session` as non-nullable
+        
         session: { ...ctx.session, user: ctx.session.user },
       },
     });

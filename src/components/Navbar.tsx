@@ -16,29 +16,29 @@ import {
 } from "./ui/sidebar";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import {UserButton} from "./UserButton";
+import { UserButton } from "./UserButton";
 
+const firstSection = [
+  {
+    icon: VideoIcon,
+    label: "Meetings",
+    href: "/meetings",
+  },
+  {
+    icon: BotIcon,
+    label: "Agents",
+    href: "/agents",
+  },
+];
+const secondSection = [
+  {
+    icon: StarIcon,
+    label: "Upgrade",
+    href: "/upgrade",
+  },
+];
 const Navbar = () => {
   const pathName = usePathname();
-  const firstSection = [
-    {
-      icon: VideoIcon,
-      label: "Meetings",
-      href: "/meetings",
-    },
-    {
-      icon: BotIcon,
-      label: "Agents",
-      href: "/agents",
-    },
-  ];
-  const secondSection = [
-    {
-      icon: StarIcon,
-      label: "Upgrade",
-      href: "/upgrade",
-    },
-  ];
 
   return (
     <Sidebar>
@@ -57,10 +57,10 @@ const Navbar = () => {
           <p className="text-2xl font-semibold">Meet.AI</p>
         </Link>
       </SidebarHeader>
-      <SidebarContent >
+      <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu  className="border-b-2 pt-2 pb-4">
+            <SidebarMenu className="border-b-2 pt-2 pb-4">
               {firstSection.map((item, index) => (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton
@@ -112,8 +112,8 @@ const Navbar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="text-zinc-100 ">
-        <UserButton/>
+      <SidebarFooter className="text-zinc-100">
+        <UserButton />
       </SidebarFooter>
     </Sidebar>
   );
