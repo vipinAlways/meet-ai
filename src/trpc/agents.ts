@@ -11,11 +11,11 @@ export const agentsRoute = createTRPCRouter({
         const data = await ctx.db.agents.findUnique({
           where: { id: input.id, userId: ctx.session.user.id },
         });
-        if(!data){
+        if (!data) {
           throw new TRPCError({
-            code:"NOT_FOUND",
-            message:"Not able to find Agent"
-          })
+            code: "NOT_FOUND",
+            message: "Not able to find Agent",
+          });
         }
         return data;
       } catch (error) {
@@ -104,6 +104,59 @@ export const agentsRoute = createTRPCRouter({
           message: "Failed to create agent",
           cause: error,
         });
+      }
+    }),
+  remove: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const removeAgent = await ctx.db.agents.delete({
+          where: {
+            id: input.id,
+            userId: ctx.session.user.id,
+          },
+        });
+
+        if (!removeAgent)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Agent Not found",
+          });
+
+        return removeAgent;
+      } catch (error) {
+        throw new Error("Serever Issue While Removing the Agent");
+      }
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1, "Id is Required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const updateAgent = await ctx.db.agents.update({
+          where: {
+            id: input.id,
+            userId: ctx.session.user.id,
+          },
+          data: {},
+        });
+
+        if (!updateAgent)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Agent Not found",
+          });
+
+        return updateAgent;
+      } catch (error) {
+         throw new Error("Serever Issue While updating the Agent");
       }
     }),
 });
