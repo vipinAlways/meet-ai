@@ -1,21 +1,17 @@
 "use client";
 
-import { Ban } from "lucide-react";
-import React, { useState } from "react";
-import { TiEject } from "react-icons/ti";
+import React from "react";
 import { columns } from "~/components/Column";
+import DataPagiNation from "~/components/DataPagiNation";
 import { DataTable } from "~/components/DataTable";
 import EmptyState from "~/components/EmptyState";
-import LoadingState from "~/components/LoadingState";
-import ResponsiveDialog from "~/components/ResponsiveDialog";
-import { Button } from "~/components/ui/button";
+import { useAgentFilters } from "~/hooks/use-agents-filters";
 import { api } from "~/trpc/react";
 
 const Agents = () => {
-  const [open, setOpen] = useState(true);
-  const [data] = api.agents.getMany.useSuspenseQuery();
-
-  if (!data || data?.length === 0)
+  const [filters, setFilters] = useAgentFilters();
+  const [data] = api.agents.getMany.useSuspenseQuery({ ...filters });
+  if (!data || data.items.length === 0)
     return (
       <EmptyState
         title="Create your first Agent"
@@ -26,7 +22,12 @@ instructions and can interact with participants during the call."
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 px-4 pb-4 md:px-8">
-      <DataTable data={data} columns={columns} />
+      <DataTable data={data.items} columns={columns} />
+      <DataPagiNation
+        page={filters.page}
+        totalPage={data.totalPages}
+        onPageChange={(page: number) => setFilters({ page })}
+      />
     </div>
   );
 };
