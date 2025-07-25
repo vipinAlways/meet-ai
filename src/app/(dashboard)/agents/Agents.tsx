@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React from "react";
 import { columns } from "~/components/Column";
 import DataPagiNation from "~/components/DataPagiNation";
@@ -11,6 +12,7 @@ import { api } from "~/trpc/react";
 const Agents = () => {
   const [filters, setFilters] = useAgentFilters();
   const [data] = api.agents.getMany.useSuspenseQuery({ ...filters });
+  const router = useRouter();
   if (!data || data.items.length === 0)
     return (
       <EmptyState
@@ -22,7 +24,11 @@ instructions and can interact with participants during the call."
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 px-4 pb-4 md:px-8">
-      <DataTable data={data.items} columns={columns} />
+      <DataTable
+        data={data.items}
+        columns={columns}
+        onRowClick={(row) => router.push(`/agents/${row.id}`)}
+      />
       <DataPagiNation
         page={filters.page}
         totalPage={data.totalPages}

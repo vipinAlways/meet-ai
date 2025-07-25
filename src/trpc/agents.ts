@@ -9,10 +9,15 @@ export const agentsRoute = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const data = await ctx.db.agents.findUnique({
-          where: { id: input.id },
+          where: { id: input.id, userId: ctx.session.user.id },
         });
-
-        return data!;
+        if(!data){
+          throw new TRPCError({
+            code:"NOT_FOUND",
+            message:"Not able to find Agent"
+          })
+        }
+        return data;
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
@@ -41,10 +46,11 @@ export const agentsRoute = createTRPCRouter({
               mode: "insensitive",
             },
           },
-          orderBy:[
-             {
-            createdAt: "desc"},
-            {id: "desc"}
+          orderBy: [
+            {
+              createdAt: "desc",
+            },
+            { id: "desc" },
           ],
           skip: (page - 1) * pageSize,
           take: pageSize,

@@ -1,7 +1,7 @@
 "use client";
 import { Loader2Icon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+
 import React from "react";
 
 interface Props {
@@ -24,11 +24,7 @@ const LoadingState = ({ description, title, Icon, spin }: Props) => {
           <h6 className="text-lg font-medium">{title}</h6>
           <p className="text-sm">{description}</p>
         </div>
-        {!session.data && (
-          <Link href={"/api/auth/authentication"} className="underline">
-            Authenticate Yourself
-          </Link>
-        )}
+        F
       </div>
     </div>
   );
