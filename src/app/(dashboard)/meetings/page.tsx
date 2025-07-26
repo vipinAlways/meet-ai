@@ -3,9 +3,20 @@ import Meeting from "./Meeting";
 import { api, HydrateClient } from "~/trpc/server";
 import LoadingState from "~/components/LoadingState";
 import MeetingListHeader from "~/components/MeetingListHeader";
+import { loadSearchParams } from "./params";
+import type { SearchParams } from "nuqs";
 
-const page = async () => {
-  await api.meetings.getMany.prefetch({});
+
+interface Props{
+  searchParams:Promise<SearchParams>
+}
+
+
+const page = async ({searchParams}:Props) => {
+  const filters = await loadSearchParams(searchParams)
+  await api.meetings.getMany.prefetch({
+      ...filters
+  });
 
   return (
     <>

@@ -10,6 +10,14 @@ type RouterOutputs = inferRouterOutputs<AppRouter>;
 export type AgentGetOne = RouterOutputs["agents"]["getOne"];
 export type MeetingGetOne = RouterOutputs["meetings"]["getOne"];
 export type MeetingGetMAny = {
-    items:RouterOutputs["meetings"]["getMany"]["items"],
-    duration:RouterOutputs["meetings"]["getMany"]["duration"],
-}  ;
+  items: RouterOutputs["meetings"]["getMany"]["items"];
+  duration: RouterOutputs["meetings"]["getMany"]["duration"];
+};
+
+export enum MeetingStatus {
+  UPCOMING = "UPCOMING",
+  ACTIVE = "ACTIVE",
+  COMPLETED = "COMPLETED",
+  PROCESSING = "PROCESSING",
+  CANCELLED = "CANCELLED",
+}

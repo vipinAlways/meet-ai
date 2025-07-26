@@ -4,12 +4,13 @@ import { Button } from "./ui/button";
 import { PlusIcon, XCircleIcon } from "lucide-react";
 import NewAgentDialog from "./newAgentDialog";
 import { useAgentFilters } from "~/hooks/use-agents-filters";
-import AgentsSearchFilter from "./AgentsSearchFilter";
+import SearchFilter from "./AgentsSearchFilter";
+
 
 const AgentsListHeader = () => {
   const [filters, setFilters] = useAgentFilters();
   const [isOpen, setISOpen] = useState(false);
-
+  const [filter,seFilters ] = useAgentFilters()
   const isAnyFilterModified = !!filters.search;
 
   const onClearFilters = () => {
@@ -35,11 +36,11 @@ const AgentsListHeader = () => {
         </div>
 
         <div className="flex items-center gap-x-2 p-1">
-          <AgentsSearchFilter />
+          <SearchFilter filters={filter} setFilters={setFilters}/>
           {isAnyFilterModified && (
             <Button
               variant={"outline"}
-              onClick={() => onClearFilters}
+              onClick={onClearFilters}
               size={"sm"}
             >
               <XCircleIcon /> clear

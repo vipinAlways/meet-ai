@@ -49,13 +49,13 @@ export const Meetingcolumns: ColumnDef<
     header: "Meeting Name",
     cell: ({ row }) => {
       return (
-        <div className="flex flex-col gap-y-1">
+        <div className="flex flex-col gap-y-1 cursor-pointer">
           <span className="font-semibold capitalize">{row.original.name}</span>
           <div className="flex items-center gap-x-2">
             <div className="flex items-center gap-x-1">
               <CornerRightDownIcon className="text-muted-foreground size-3" />
               <span className="text-muted-foreground max-w-[200px] truncate text-sm capitalize">
-                {row.original.agent.name}
+                {row.original.agent.name!}
               </span>
             </div>
             <GeneratedAvatar
@@ -65,7 +65,7 @@ export const Meetingcolumns: ColumnDef<
             />
             <span className="font-semibold capitalize">
               {row.original.startedAt
-                ? format(row.original.startedAt, "MM d")
+                ? format(row.original.startedAt, "MM/d")
                 : ""}
             </span>
           </div>

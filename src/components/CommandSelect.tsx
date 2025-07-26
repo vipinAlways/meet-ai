@@ -17,7 +17,7 @@ interface Props {
     children: React.ReactNode;
   }>;
   onSelect: (value: string) => void;
-  onSearch: (value: string) => void;
+  onSearch?: (value: string) => void;
   value?: string;
   placeholder?: string;
   isSearchable?: boolean;
@@ -35,6 +35,10 @@ const CommandSelect = ({
 }: Props) => {
   const [open, setOpen] = useState(false);
   const selectedOption = option.find((opp) => opp.value === value);
+  const handleOpenChange = (value:boolean)=>{
+    onSearch?.("")
+    setOpen(value)
+  }
   return (
     <>
       <Button
@@ -51,7 +55,7 @@ const CommandSelect = ({
         <ChevronsUpDownIcon />
       </Button>
 
-      <CommandResponsiveDialog open={open} onOpenChange={setOpen} shouoldFilter={!onSearch}>
+      <CommandResponsiveDialog open={open} onOpenChange={handleOpenChange} shouoldFilter={!onSearch}>
         <CommandInput
           placeholder="Search..."
           onValueChange={onSearch}

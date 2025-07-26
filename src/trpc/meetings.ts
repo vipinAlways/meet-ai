@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import z from "zod";
+import { MeetingStatus } from "~/lib/type";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 
@@ -33,11 +34,21 @@ export const meetingsRoute = createTRPCRouter({
         page: z.number().default(1),
         pageSize: z.number().min(1).max(100).default(10),
         search: z.string().nullish(),
+        agentId: z.string().nullish(),
+        status: z
+          .enum([
+            MeetingStatus.UPCOMING,
+            MeetingStatus.ACTIVE,
+            MeetingStatus.COMPLETED,
+            MeetingStatus.PROCESSING,
+            MeetingStatus.CANCELLED,
+          ])
+          .nullish(),
       }),
     )
     .query(async ({ ctx, input }) => {
       try {
-        const { search, page, pageSize } = input;
+        const { search, page, pageSize, status, agentId } = input;
         const data = await db.meetings.findMany({
           where: {
             userId: ctx.session.user.id,
@@ -45,6 +56,8 @@ export const meetingsRoute = createTRPCRouter({
               contains: search ?? "",
               mode: "insensitive",
             },
+            status: status ?? undefined,
+            agentId: agentId ?? "",
           },
           orderBy: [
             {
@@ -65,6 +78,8 @@ export const meetingsRoute = createTRPCRouter({
               contains: search ?? "",
               mode: "insensitive",
             },
+            status: status ?? undefined,
+            agentId: agentId ?? undefined,
           },
         });
 
@@ -74,14 +89,14 @@ export const meetingsRoute = createTRPCRouter({
           duration:
             (new Date(meeting.endedAt).getTime() -
               new Date(meeting.startedAt!).getTime()) /
-            1000, // seconds
+            1000,
         }));
 
         return {
           items: data,
           total,
           totalPages,
-          duration:resultWithDuration
+          duration: resultWithDuration,
         };
       } catch (error) {
         throw new TRPCError({

@@ -1,14 +1,33 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "./ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, XCircleIcon } from "lucide-react";
 import NewMeetingDialog from "./NewMeetingDialog";
+import SearchFilter from "./AgentsSearchFilter";
+import { useMeetingFilters } from "~/hooks/use-meetings-filters";
+import StatusFilter from "./StatusFilter";
+import { AgentIdFilter } from "~/app/(dashboard)/meetings/AgentIdFilter";
+import MeetingsSearchFilter from "~/app/(dashboard)/meetings/MeetingsSearchFilter";
 
 const MeetingListHeader = () => {
-  const [open,setOpen]=useState(false)
+  const [open, setOpen] = useState(false);
+  const [filters, setFilters] = useMeetingFilters();
+
+  const isAnyFilterModified =
+    !!filters.search || !!filters.status || !!filters.agentId;
+
+const onClearFilters = () => {
+  setFilters({
+    status: null,
+    agentId: "",
+    search: "",
+    page: 1,
+  });
+};
+
   return (
     <>
-    <NewMeetingDialog open={open} onOpenChange={setOpen} />
+      <NewMeetingDialog open={open} onOpenChange={setOpen} />
       <div className="flex flex-col gap-y-4 p-4 md:px-8">
         <div className="flex items-center justify-between">
           <h5 className="text-xl font-medium">My Meetings</h5>
@@ -21,8 +40,21 @@ const MeetingListHeader = () => {
             New Meeting
           </Button>
         </div>
+        <div className="flex items-center gap-x-2 p-1">
+        <MeetingsSearchFilter/>
+          <StatusFilter />
+          <AgentIdFilter />
 
-       
+          {isAnyFilterModified && (
+            <Button
+              variant={"outline"}
+              onClick={onClearFilters}
+              size={"sm"}
+            >
+              <XCircleIcon /> clear
+            </Button>
+          )}
+        </div>
       </div>
     </>
   );

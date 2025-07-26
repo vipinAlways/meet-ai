@@ -5,14 +5,20 @@ import { DataTable } from "~/components/DataTable";
 import { api } from "~/trpc/react";
 import { Meetingcolumns } from "./MeetingColumns";
 import EmptyState from "~/components/EmptyState";
+import { useRouter } from "next/navigation";
+import { useMeetingFilters } from "~/hooks/use-meetings-filters";
 
 const Meeting = () => {
-  const [data] = api.meetings.getMany.useSuspenseQuery({});
+  const router = useRouter()
+  const [filters,setFilters] = useMeetingFilters()
+  const [data] = api.meetings.getMany.useSuspenseQuery({
+    ...filters
+  });
   if (data.items.length === 0) {
     return (
       <EmptyState
         title="Start your first Meeting"
-        description="Create an Meeting . Each Meeting will Prepare you for you future and clear your doudts."
+        description="Schedule a meeting to connect with others. Each meeting lets you collaborate, share ideas, and interact with participants in real time."
       />
     );
   }
