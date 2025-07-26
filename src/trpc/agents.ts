@@ -136,6 +136,8 @@ export const agentsRoute = createTRPCRouter({
     .input(
       z.object({
         id: z.string().min(1, "Id is Required"),
+        name: z.string().min(1, "Name is required"),
+        instructions: z.string().min(1, "Instruction is required"),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -145,7 +147,11 @@ export const agentsRoute = createTRPCRouter({
             id: input.id,
             userId: ctx.session.user.id,
           },
-          data: {},
+          data: {
+              name: input.name,
+              instructions: input.instructions,
+          
+          },
         });
 
         if (!updateAgent)
@@ -156,7 +162,7 @@ export const agentsRoute = createTRPCRouter({
 
         return updateAgent;
       } catch (error) {
-         throw new Error("Serever Issue While updating the Agent");
+        throw new Error("Serever Issue While updating the Agent");
       }
     }),
 });

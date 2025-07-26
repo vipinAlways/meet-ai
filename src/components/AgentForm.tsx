@@ -18,7 +18,6 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
-
 const agentFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   instructions: z.string().min(1, "Instructions are required"),
@@ -31,7 +30,7 @@ interface AgentFormProps {
 }
 
 const AgentForm = ({ initialValues, onCancel, onSuccess }: AgentFormProps) => {
-  const session = useSession()
+  const session = useSession();
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
     defaultValues: {
@@ -39,10 +38,20 @@ const AgentForm = ({ initialValues, onCancel, onSuccess }: AgentFormProps) => {
       instructions: initialValues?.instructions || "",
     },
   });
-  const router = useRouter();
+
   const utils = api.useUtils();
 
-  const mutate = api.agents.create.useMutation({
+  const createMutate = api.agents.create.useMutation({
+    onSuccess: async () => {
+      await utils.agents.getMany.invalidate();
+      //TODO:invalidata free tier
+      onSuccess?.();
+    },
+    onError: () => {
+      if (!session) toast.error("Unauthorized");
+    },
+  });
+  const updateMutate = api.agents.update.useMutation({
     onSuccess: async () => {
       await utils.agents.getMany.invalidate();
       if (initialValues?.id) {
@@ -51,19 +60,18 @@ const AgentForm = ({ initialValues, onCancel, onSuccess }: AgentFormProps) => {
       onSuccess?.();
     },
     onError: () => {
-      console.error("Failed to create agent");
-      //TODO:check that thing out 
-      if(!session)toast.error("Unauthorized");
+      //TODO:check that thing out
+      if (!session) toast.error("Unauthorized");
     },
   });
 
   const isEdit = !!initialValues?.id;
-  const isPending = mutate.isPending;
+  const isPending = createMutate.isPending || updateMutate.isPending;
   const onSubmit = (values: z.infer<typeof agentFormSchema>) => {
     if (isEdit) {
-      console.log(); //TODO:update agent;
+      updateMutate.mutate({ ...values, id: initialValues.id });
     } else {
-      mutate.mutate(values);
+      createMutate.mutate(values);
     }
   };
   return (
