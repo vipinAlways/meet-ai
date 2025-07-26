@@ -73,12 +73,14 @@ function CommandResponsiveDialog({
   children,
   className,
   showCloseButton = true,
+  shouoldFilter=true,
   ...props
 }: React.ComponentProps<typeof Drawer> & {
   title?: string;
   description?: string;
   className?: string;
   showCloseButton?: boolean;
+  shouoldFilter?:boolean
 }) {
   const isMobile = useIsMobile();
 
@@ -89,7 +91,7 @@ function CommandResponsiveDialog({
     return (
       <Drawer {...props}>
         <DrawerContent className="overflow-hidden p-0">
-          <Command className={commandClasses}>
+          <Command className={commandClasses} shouldFilter={shouoldFilter}>
             <DrawerHeader className="sr-only">
               <DrawerTitle>{title}</DrawerTitle>
               <DrawerDescription>{description}</DrawerDescription>
@@ -111,7 +113,7 @@ function CommandResponsiveDialog({
         className={cn("overflow-hidden p-0", className)}
         showCloseButton={showCloseButton}
       >
-        <Command className={commandClasses}>{children}</Command>
+        <Command className={commandClasses} shouldFilter={shouoldFilter}>{children}</Command>
       </DialogContent>
     </Dialog>
   );

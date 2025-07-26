@@ -80,4 +80,63 @@ export const meetingsRoute = createTRPCRouter({
         });
       }
     }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1, "Name is required"),
+        agentId: z.string().min(1, "Agent is required"),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const meeting = await ctx.db.meetings.create({
+          data: {
+            name: input.name,
+            agentId: input.agentId,
+            userId: ctx.session.user.id,
+            status: "ACTIVE",
+          },
+        });
+        return meeting;
+      } catch (error) {
+        console.error(error);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to create agent",
+          cause: error,
+        });
+      }
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1, "Id is Required"),
+        name: z.string().min(1, "Name is required"),
+        agentId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const updateMeeting = await ctx.db.meetings.update({
+          where: {
+            id: input.id,
+            userId: ctx.session.user.id,
+          },
+          data: {
+            name: input.name,
+            agentId:input.agentId
+          },
+        });
+
+        if (!updateMeeting)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Agent Not found",
+          });
+
+        return updateMeeting;
+      } catch (error) {
+        throw new Error("Serever Issue While updating the Agent");
+      }
+    }),
 });

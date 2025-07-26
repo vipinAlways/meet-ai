@@ -4,7 +4,9 @@ import { api } from "~/trpc/react";
 
 const Meeting = () => {
   const [data] = api.meetings.getMany.useSuspenseQuery({});
-  return <div></div>;
+  return <div>
+      
+  </div>;
 };
 
 export default Meeting;

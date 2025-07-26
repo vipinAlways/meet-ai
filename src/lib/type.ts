@@ -8,3 +8,4 @@ type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 // Get the output type of agents.getOne
 export type AgentGetOne = RouterOutputs["agents"]["getOne"];
+export type MeetingGetOne = RouterOutputs["meetings"]["getOne"];
