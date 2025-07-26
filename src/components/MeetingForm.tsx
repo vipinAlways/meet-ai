@@ -61,7 +61,7 @@ const MeetingForm = ({
   const createMutate = api.meetings.create.useMutation({
     onSuccess: async (data) => {
       await utils.meetings.getMany.invalidate();
-      //TODO:invalidata free tier
+      
       onSuccess?.(data.id);
     },
     onError: () => {
@@ -136,7 +136,7 @@ const MeetingForm = ({
                         </div>
                       ),
                     }))}
-                    onSelect={()=>field.onChange}
+                    onSelect={field.onChange}
                     onSearch={setAgentSearch}
                     value={field.value}
                     className="h-14 rounded-md px-2 outline focus:outline-blue-800"
@@ -144,9 +144,9 @@ const MeetingForm = ({
                   />
                 </FormControl>
 
-                <FormDescription>
-                  Not Found what you#&39;re lookin for
-                  <Button type="button" className="text-primary hover:underline" 
+                <FormDescription className="flex items-center gap-x-2">
+                  Not Found what you&#39;re lookin for
+                  <Button type="button" className="hover:underline bg-blue-700 hover:bg-blue-700 text-white " 
                   onClick={()=>setOpenNewAgentDialog(true)}>
                     Create New Agent
                   </Button>

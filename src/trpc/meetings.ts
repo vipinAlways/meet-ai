@@ -54,6 +54,9 @@ export const meetingsRoute = createTRPCRouter({
           ],
           skip: (page - 1) * pageSize,
           take: pageSize,
+          include: {
+            agent: true,
+          },
         });
         const total = await ctx.db.meetings.count({
           where: {
@@ -66,11 +69,19 @@ export const meetingsRoute = createTRPCRouter({
         });
 
         const totalPages = Math.ceil(total / pageSize);
+        const resultWithDuration = data.map((meeting) => ({
+          ...meeting,
+          duration:
+            (new Date(meeting.endedAt).getTime() -
+              new Date(meeting.startedAt!).getTime()) /
+            1000, // seconds
+        }));
 
         return {
           items: data,
           total,
           totalPages,
+          duration:resultWithDuration
         };
       } catch (error) {
         throw new TRPCError({
@@ -94,7 +105,7 @@ export const meetingsRoute = createTRPCRouter({
             name: input.name,
             agentId: input.agentId,
             userId: ctx.session.user.id,
-            status: "ACTIVE",
+            status: "UPCOMING",
           },
         });
         return meeting;
@@ -124,7 +135,7 @@ export const meetingsRoute = createTRPCRouter({
           },
           data: {
             name: input.name,
-            agentId:input.agentId
+            agentId: input.agentId,
           },
         });
 

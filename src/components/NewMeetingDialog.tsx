@@ -21,7 +21,7 @@ const NewMeetingDialog = ({ onOpenChange, open }: NewMeetinDialogProps) => {
         onSuccess={(id?: string) => {
           onOpenChange(false);
           if (id) {
-            router.push(`/meeting/${id}`)
+            router.push(`/meetings/${id}`)
           }
         }}
         onCancel={() => onOpenChange(false)}
