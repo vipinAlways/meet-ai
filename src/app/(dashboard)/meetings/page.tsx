@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { Suspense } from "react";
+import Meeting from "./Meeting";
+import { api, HydrateClient } from "~/trpc/server";
+import LoadingState from "~/components/LoadingState";
 
-const page = () => {
+const page = async () => {
+  await api.meetings.getMany.prefetch({});
   return (
-    <div>HEllo from meetings</div>
-  )
-}
+    <HydrateClient>
+      <Suspense
+        fallback={
+          <LoadingState
+            title="Loading Meeting"
+            description="it will take a while Stay attached ......"
+          />
+        }
+      >
+        <Meeting />
+      </Suspense>
+    </HydrateClient>
+  );
+};
 
-export default page
+export default page;
