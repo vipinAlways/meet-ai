@@ -7,6 +7,7 @@ import { Meetingcolumns } from "./MeetingColumns";
 import EmptyState from "~/components/EmptyState";
 import { useRouter } from "next/navigation";
 import { useMeetingFilters } from "~/hooks/use-meetings-filters";
+import DataPagiNation from "~/components/DataPagiNation";
 
 const Meeting = () => {
   const router = useRouter()
@@ -25,7 +26,8 @@ const Meeting = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 px-4">
-      <DataTable data={data.items} columns={Meetingcolumns} />
+      <DataTable data={data.items} columns={Meetingcolumns} onRowClick={(row)=>router.push(`/meetings/${row.id}`)} />
+      <DataPagiNation onPageChange={(page)=>setFilters({page})} page={filters.page} totalPage={data.totalPages}/>
     </div>
   );
 };

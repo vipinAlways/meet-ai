@@ -11,6 +11,9 @@ export const meetingsRoute = createTRPCRouter({
       try {
         const data = await ctx.db.meetings.findUnique({
           where: { id: input.id, userId: ctx.session.user.id },
+          include: {
+            agent: true,
+          },
         });
         if (!data) {
           throw new TRPCError({
@@ -157,10 +160,36 @@ export const meetingsRoute = createTRPCRouter({
         if (!updateMeeting)
           throw new TRPCError({
             code: "NOT_FOUND",
-            message: "Agent Not found",
+            message: "Meeting Not found",
           });
 
         return updateMeeting;
+      } catch (error) {
+        throw new Error("Serever Issue While updating the Agent");
+      }
+    }),
+  remove: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1, "Id is Required"),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const removeMeeting = await ctx.db.meetings.delete({
+          where: {
+            id: input.id,
+            userId: ctx.session.user.id,
+          },
+        });
+
+        if (!removeMeeting)
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Meeting Not found",
+          });
+
+        return removeMeeting;
       } catch (error) {
         throw new Error("Serever Issue While updating the Agent");
       }

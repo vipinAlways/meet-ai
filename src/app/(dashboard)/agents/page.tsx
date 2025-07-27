@@ -5,17 +5,21 @@ import LoadingState from "~/components/LoadingState";
 import AgentsListHeader from "~/components/AgentsListHeader";
 import type { SearchParams } from "nuqs";
 import { loadSearchParams } from "./params";
+import { HydrationBoundary } from "@tanstack/react-query";
 interface Props {
   searchParams: Promise<SearchParams>;
 }
 
 const Page = async ({ searchParams }: Props) => {
   const filters = await loadSearchParams(searchParams);
-  await api.agents.getMany.prefetch({ ...filters });
+  const queryClient = await api.agents.getMany.prefetch({ ...filters });
   return (
     <>
       <AgentsListHeader />
+
       <HydrateClient>
+        <HydrationBoundary state={queryClient}>
+
         <Suspense
           fallback={
             <LoadingState
@@ -27,6 +31,7 @@ const Page = async ({ searchParams }: Props) => {
         >
           <Agents />
         </Suspense>
+        </HydrationBoundary>
       </HydrateClient>
     </>
   );

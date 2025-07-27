@@ -5,6 +5,7 @@ import LoadingState from "~/components/LoadingState";
 import MeetingListHeader from "~/components/MeetingListHeader";
 import { loadSearchParams } from "./params";
 import type { SearchParams } from "nuqs";
+import { HydrationBoundary } from "@tanstack/react-query";
 
 
 interface Props{
@@ -14,7 +15,7 @@ interface Props{
 
 const page = async ({searchParams}:Props) => {
   const filters = await loadSearchParams(searchParams)
-  await api.meetings.getMany.prefetch({
+   await api.meetings.getMany.prefetch({
       ...filters
   });
 
@@ -22,7 +23,8 @@ const page = async ({searchParams}:Props) => {
     <>
       <MeetingListHeader />
       <HydrateClient>
-        <Suspense
+      {/* <HydrationBoundary state={queryClient}> */}
+          <Suspense
           fallback={
             <LoadingState
               title="Loading Meeting"
@@ -32,6 +34,7 @@ const page = async ({searchParams}:Props) => {
         >
           <Meeting />
         </Suspense>
+      {/* </HydrationBoundary> */}
       </HydrateClient>
     </>
   );

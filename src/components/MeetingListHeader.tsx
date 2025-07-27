@@ -8,6 +8,7 @@ import { useMeetingFilters } from "~/hooks/use-meetings-filters";
 import StatusFilter from "./StatusFilter";
 import { AgentIdFilter } from "~/app/(dashboard)/meetings/AgentIdFilter";
 import MeetingsSearchFilter from "~/app/(dashboard)/meetings/MeetingsSearchFilter";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 const MeetingListHeader = () => {
   const [open, setOpen] = useState(false);
@@ -16,14 +17,14 @@ const MeetingListHeader = () => {
   const isAnyFilterModified =
     !!filters.search || !!filters.status || !!filters.agentId;
 
-const onClearFilters = () => {
-  setFilters({
-    status: null,
-    agentId: "",
-    search: "",
-    page: 1,
-  });
-};
+  const onClearFilters = () => {
+    setFilters({
+      status: null,
+      agentId: "",
+      search: "",
+      page: 1,
+    });
+  };
 
   return (
     <>
@@ -40,21 +41,21 @@ const onClearFilters = () => {
             New Meeting
           </Button>
         </div>
-        <div className="flex items-center gap-x-2 p-1">
-        <MeetingsSearchFilter/>
-          <StatusFilter />
-          <AgentIdFilter />
+        <ScrollArea>
+          <div className="flex items-center gap-x-2 p-1">
+            <MeetingsSearchFilter />
+            <StatusFilter />
+            <AgentIdFilter />
 
-          {isAnyFilterModified && (
-            <Button
-              variant={"outline"}
-              onClick={onClearFilters}
-              size={"sm"}
-            >
-              <XCircleIcon /> clear
-            </Button>
-          )}
-        </div>
+            {isAnyFilterModified && (
+              <Button variant={"outline"} onClick={onClearFilters} size={"sm"}>
+                <XCircleIcon /> clear
+              </Button>
+            )}
+          </div>
+
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
     </>
   );

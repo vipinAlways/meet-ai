@@ -18,12 +18,13 @@ import {
   TrashIcon,
   VideoIcon,
 } from "lucide-react";
-import { DropdownMenu } from "~/components/ui/dropdown-menu";
 import {
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "~/components/ui/dropdown-menu";
+
 import { Button } from "~/components/ui/button";
 import GeneratedAvatar from "~/components/GeneratedAvatar";
 import { Badge } from "~/components/ui/badge";
@@ -39,21 +40,20 @@ const AgentId = ({ agentId }: Props) => {
   const [data] = api.agents.getOne.useSuspenseQuery({ id: agentId });
   const router = useRouter();
   const utils = api.useUtils();
-  const route = useRouter()
+  const route = useRouter();
   const [updateAgentDilogOpen, setUpdateAgentDilogOpen] = useState(false);
+  const removeAgent = api.agents.remove.useMutation({
+    onSuccess: async () => {
+      await utils.agents.getMany.invalidate();
+      toast("Agent has been removed", {});
+      router.push("/agents");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
   const onDeleteAgent = () => {
-    api.agents.remove
-      .useMutation({
-        onSuccess: async () => {
-          await utils.agents.getMany.invalidate();
-          toast("Agent has been removed", {});
-          router.push("/agents");
-        },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      })
-      .mutate({ id: agentId });
+    removeAgent.mutate({ id: agentId });
   };
   return (
     <>
@@ -72,7 +72,12 @@ const AgentId = ({ agentId }: Props) => {
                   asChild
                   className="text-foreground text-xl font-medium"
                 >
-                  <span className="cursor-pointer" onClick={()=>router.push("/agents")}>My Agents</span>
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => router.push("/agents")}
+                  >
+                    My Agents
+                  </span>
                 </BreadcrumbLink>
               </BreadcrumbItem>
 
@@ -83,7 +88,12 @@ const AgentId = ({ agentId }: Props) => {
                   asChild
                   className="text-foreground text-xl font-medium"
                 >
-                  <span className="cursor-pointer" onClick={()=>router.push(`/agents/${agentId}`)}>{data.name}</span>
+                  <span
+                    className="cursor-pointer"
+                    onClick={() => router.push(`/agents/${agentId}`)}
+                  >
+                    {data.name}
+                  </span>
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbLink>
