@@ -5,8 +5,9 @@ import React from "react";
 interface Props {
   title: string;
   description: string;
+  image?:string
 }
-const EmptyState = ({ description, title }: Props) => {
+const EmptyState = ({ description, title,image="/svg/empty.svg" }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center ">
     

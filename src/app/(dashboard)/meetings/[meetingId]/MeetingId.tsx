@@ -10,7 +10,13 @@ import {
 } from "~/components/ui/breadcrumb";
 import { api } from "~/trpc/react";
 import Link from "next/link";
-import { ChevronRightIcon, PencilIcon, TrashIcon } from "lucide-react";
+import {
+  BanIcon,
+  ChevronRightIcon,
+  PencilIcon,
+  TrashIcon,
+  VideoIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
@@ -22,30 +28,40 @@ import { Button } from "~/components/ui/button";
 import { CiMenuKebab } from "react-icons/ci";
 import { toast } from "sonner";
 import UpdateMeetingDialog from "./UpdateMeetingDialog";
+import EmptyState from "~/components/EmptyState";
 
 const MeetingId = ({ meetingId }: { meetingId: string }) => {
   const [data] = api.meetings.getOne.useSuspenseQuery({ id: meetingId });
   const router = useRouter();
-  const [onDialogOpen,setOnDialogOpen] = useState(false)
+  const [onDialogOpen, setOnDialogOpen] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
   const utils = api.useUtils();
-    const removeMeeting = api.meetings.remove
-      .useMutation({
-        onSuccess: async () => {
-          await utils.meetings.getMany.invalidate();
-          toast("Agent has been removed", {});
-          router.push("/meetings");
-        },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      })
+  const removeMeeting = api.meetings.remove.useMutation({
+    onSuccess: async () => {
+      await utils.meetings.getMany.invalidate();
+      toast("Agent has been removed", {});
+      router.push("/meetings");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
   const onDeleteMeeting = () => {
-   
-     removeMeeting .mutate({ id: meetingId });
+    removeMeeting.mutate({ id: meetingId });
   };
+
+  const isActive = data.status === "ACTIVE";
+  const isUpcoming = data.status === "CANCELLED";
+  const isCancelled = data.status === "PROCESSING";
+  const isCompleted = data.status === "COMPLETED";
+  const isProcessing = data.status === "UPCOMING";
   return (
     <div>
-      <UpdateMeetingDialog initialValues={data} onOpenChange={setOnDialogOpen} open={onDialogOpen}/>
+      <UpdateMeetingDialog
+        initialValues={data}
+        onOpenChange={setOnDialogOpen}
+        open={onDialogOpen}
+      />
       <div className="flex items-center justify-between">
         <Breadcrumb>
           <BreadcrumbLink className="flex items-center">
@@ -103,6 +119,81 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      {isCancelled && (
+        <div className="flex flex-col items-center gap-y-8 rounded bg-white px-4 py-4">
+          <EmptyState
+            title="Meeting cancelled"
+            description="This meeting was cancelled"
+            image="/svg/cancel.svg"
+          />
+        </div>
+      )}
+      {isActive && (
+        <div className="flex flex-col items-center gap-y-8 rounded bg-white px-4 py-4">
+          <EmptyState
+            title="Meeting is Active"
+            description="Meeting will end once all participants have left"
+            image="/svg/upcoming.svg"
+          />
+
+          <div className="flex w-full items-center">
+            <Button
+              asChild
+              className="w-full lg:w-auto"
+              disabled={isCancelling}
+            >
+              <Link href={`/call/${meetingId}`}>
+                <VideoIcon />
+                Join Meeting
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
+      {isCompleted && <div>{data.status}</div>}
+      {isUpcoming && (
+        <div>
+          <div className="flex flex-col items-center gap-y-8 rounded bg-white px-4 py-4">
+            <EmptyState
+              title="Not started Yet"
+              description="Once you start this meeting, a summary will apear here"
+              image="/svg/upcoming.svg"
+            />
+
+            <div className="flex w-full flex-col-reverse items-center gap-2 lg:flex-row lg:justify-center">
+              <Button
+                variant={"secondary"}
+                className="w-full lg:w-auto"
+                onClick={() => {}}
+                disabled={isCancelling}
+              >
+                <BanIcon />
+                Cancel Meeting
+              </Button>
+              <Button
+                asChild
+                className="w-full lg:w-auto"
+                disabled={isCancelling}
+              >
+                <Link href={`/call/${meetingId}`}>
+                  <VideoIcon />
+                  Start Meeting
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isProcessing && (
+        <div className="flex flex-col items-center gap-y-8 rounded bg-white px-4 py-4">
+          <EmptyState
+            title="Meeting completed"
+            description="This meeting was completed, a summary will appear soon"
+            image="/svg/processing.svg"
+          />
+        </div>
+      )}
     </div>
   );
 };
