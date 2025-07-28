@@ -1,5 +1,7 @@
 import { TRPCError } from "@trpc/server";
-import z from "zod";
+import z, { custom } from "zod";
+import generateAvatatUri from "~/lib/avatar";
+import { streamVideo } from "~/lib/stream-videos";
 import { MeetingStatus } from "~/lib/type";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
@@ -126,6 +128,54 @@ export const meetingsRoute = createTRPCRouter({
             status: "UPCOMING",
           },
         });
+
+        const call = streamVideo.video.call("default", meeting.id);
+
+        await call.create({
+          data: {
+            created_by_id: ctx.session.user.id,
+            custom: {
+              meetingId: meeting.id,
+              meetingName: meeting.name,
+            },
+            settings_override: {
+              transcription: {
+                language: "en",
+                mode: "auto-on",
+                closed_caption_mode: "auto-on",
+              },
+              recording: {
+                mode: "auto-on",
+                quality: "1080p",
+              },
+            },
+          },
+        });
+
+        const existingAgent = await ctx.db.agents.findFirst({
+          where: {
+            id: meeting.agentId,
+          },
+        });
+
+        if (!existingAgent) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "Agent not found",
+          });
+        }
+
+        await streamVideo.upsertUsers([
+          {
+            id: existingAgent.id,
+            name: existingAgent.name,
+            role: "user",
+            image: generateAvatatUri({
+              seed: existingAgent.name,
+              variant: "botttsNeutral",
+            }),
+          },
+        ]);
         return meeting;
       } catch (error) {
         console.error(error);
@@ -194,4 +244,38 @@ export const meetingsRoute = createTRPCRouter({
         throw new Error("Serever Issue While updating the Agent");
       }
     }),
+  generateToken: protectedProcedure.mutation(async ({ ctx }) => {
+    const user = await ctx.db.user.findFirst({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
+    if (!user) {
+      console.log("user is not authenticated");
+    }
+    await streamVideo.upsertUsers([
+      {
+        id: ctx.session.user.id,
+        name: user?.name ?? "user",
+        role: "admin",
+        image:
+          ctx.session.user.image ??
+          generateAvatatUri({
+            seed: user?.name ?? `@user${Math.random() * 10000}`,
+            variant: "initials",
+          }),
+      },
+    ]);
+
+    const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+    const issuedAt = Math.floor(Date.now() / 1000) - 60;
+
+    const token = streamVideo.generateUserToken({
+      user_id: ctx.session.user.id,
+      exp: expirationTime,
+      validity_in_seconds: issuedAt,
+    });
+
+    return token;
+  }),
 });

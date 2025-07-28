@@ -42,7 +42,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
       toast("Agent has been removed", {});
       router.push("/meetings");
     },
-    onError: (error) => {
+    onError: (error:any) => {
       toast.error(error.message);
     },
   });
@@ -51,10 +51,10 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
   };
 
   const isActive = data.status === "ACTIVE";
-  const isUpcoming = data.status === "CANCELLED";
-  const isCancelled = data.status === "PROCESSING";
+  const isUpcoming = data.status === "UPCOMING";
+  const isCancelled = data.status === "CANCELLED";
   const isCompleted = data.status === "COMPLETED";
-  const isProcessing = data.status === "UPCOMING";
+  const isProcessing = data.status === "PROCESSING";
   return (
     <div>
       <UpdateMeetingDialog
