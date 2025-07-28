@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
@@ -28,17 +29,20 @@ export const User = createTRPCRouter({
       }
     }),
   existingUser: publicProcedure
-  .input(z.object({ email: z.string().email() }))
-  .query(async ({ ctx, input }) => {
+ 
+  .query(async ({ ctx }) => {
    try {
      const existingUser = await ctx.db.user.findFirst({
-      where: { email: input.email },
+      where: { id: ctx.session?.user.id },
     });
 
     if (existingUser) {
-      return true;
+      return existingUser;
     } else {
-      return false;
+       throw new TRPCError({
+        code:"NOT_FOUND",
+        message:"Not able to find user"
+       });
     }
    } catch (error) {
      console.error("Error checking existing user:", error);

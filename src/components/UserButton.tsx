@@ -1,5 +1,6 @@
+"use client"
 
-import { signOut, useSession } from "next-auth/react";
+import { signOut, } from "next-auth/react";
 import React from "react";
 import { Button } from "~/components/ui/button";
 import {
@@ -25,9 +26,10 @@ import { ChevronDownIcon, CreditCardIcon, LogOut } from "lucide-react";
 import { useIsMobile } from "~/hooks/use-mobile";
 
 import { Avatar, AvatarImage } from "./ui/avatar";
+import { api } from "~/trpc/react";
 
 export const UserButton = () => {
-  const { data } = useSession();
+  const { data } = api.user.existingUser.useQuery();
   const isMobile = useIsMobile();
 
   if (!data) return null;
@@ -39,13 +41,13 @@ export const UserButton = () => {
           asChild
           className="border-border/20 flex w-full items-center justify-between gap-x-2 overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10"
         >
-          {data.user.image ? (
+          {data.image ? (
             <Avatar>
-              <AvatarImage src={data.user.image || ""}  alt="avatar" className="rounded-full "/>
+              <AvatarImage src={data.image || ""}  alt="avatar" className="rounded-full "/>
             </Avatar>
           ) : (
             <GeneratedAvatar
-              seed={data.user.name ?? "User"}
+              seed={data.name ?? "User"}
               variant="initials"
               className="mr-3 size-9 text-white"
             />
@@ -54,17 +56,17 @@ export const UserButton = () => {
           <div className="flex min-w-8 flex-1 flex-col gap-0.5 overflow-hidden text-left">
             <p className="w-full truncate text-sm">
               {" "}
-              {data.user.name || "User"}
+              {data.name || "User"}
             </p>
-            <p className="w-full truncate text-xs">{data.user.email}</p>
+            <p className="w-full truncate text-xs">{data.email}</p>
           </div>
           <ChevronDownIcon className="size-4 shrink-0" />
         </DrawerTrigger>
 
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>{data.user.name ?? ""}</DrawerTitle>
-            <DrawerDescription>{data.user.email}</DrawerDescription>
+            <DrawerTitle>{data.name ?? ""}</DrawerTitle>
+            <DrawerDescription>{data.email}</DrawerDescription>
           </DrawerHeader>
 
           <DrawerFooter>
@@ -87,21 +89,21 @@ export const UserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="border-border/20 flex w-full items-center justify-between gap-x-2 overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10">
-        {data.user.image ? (
+        {data.image ? (
           <Avatar>
-            <AvatarImage src={data.user.image || ""} />
+            <AvatarImage src={data.image || ""} />
           </Avatar>
         ) : (
           <GeneratedAvatar
-            seed={data.user.name ?? "User"}
+            seed={data.name ?? "User"}
             variant="initials"
             className="mr-3 size-9 text-white"
           />
         )}
 
         <div className="flex min-w-8 flex-1 flex-col gap-0.5 overflow-hidden text-left">
-          <p className="w-full truncate text-sm"> {data.user.name || "User"}</p>
-          <p className="w-full truncate text-xs">{data.user.email}</p>
+          <p className="w-full truncate text-sm"> {data.name || "User"}</p>
+          <p className="w-full truncate text-xs">{data.email}</p>
         </div>
         <ChevronDownIcon className="size-4 shrink-0" />
       </DropdownMenuTrigger>
@@ -110,10 +112,10 @@ export const UserButton = () => {
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
             <span className="truncate font-medium">
-              {data.user.name || "user"}
+              {data.name || "user"}
             </span>
             <span className="text-muted-foreground truncate text-sm font-normal">
-              {data.user.email || "Email"}
+              {data.email || "Email"}
             </span>
           </div>
         </DropdownMenuLabel>
