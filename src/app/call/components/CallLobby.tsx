@@ -42,7 +42,7 @@ const DisableVideoPreview = () => {
 const AllowBrowserPermission = () => {
   return (
     <p className="text-sm">
-      Please grant your browser a permission to access your camera ans micrphone
+      Please grant your browser a permission to access your camera ans microphone
     </p>
   );
 };
@@ -60,8 +60,7 @@ export default function CallLobby({ onJoin }: Props) {
         <div className="bg-background flex flex-col items-center justify-center gap-y-6 rounded-lg p-10 shadow-sm">
           <div className="flex flex-col gap-y-2 text-center">
             <h6 className="text-lg font-medium">Ready to join?</h6>
-            <p className="text-sm">Set up yout call before joining</p>
-            <p>{user?.name}</p>
+            <p className="text-sm">Set up your call before joining</p>
           </div>
 
           <VideoPreview
@@ -78,7 +77,7 @@ export default function CallLobby({ onJoin }: Props) {
           </div>
           <div className="flex w-full justify-between gap-x-2">
             <Button asChild variant={"ghost"}>
-              <Link href={"/meetings"}>Cancel</Link>
+              <Link href={"/meetings"}><span>Cancel</span></Link>
             </Button>
             <Button onClick={onJoin}>
               <LogInIcon /> Join Call

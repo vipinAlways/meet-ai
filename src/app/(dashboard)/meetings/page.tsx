@@ -16,7 +16,7 @@ const page = async ({ searchParams }: Props) => {
 
   if (filters.agentId || filters.search || filters.page || filters.status) {
     await api.meetings.getMany.prefetch({
-      ...filters,
+      ...filters
     });
   }
 

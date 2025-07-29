@@ -61,21 +61,17 @@ export const meetingsRoute = createTRPCRouter({
               contains: search ?? "",
               mode: "insensitive",
             },
-            status: status ?? undefined,
-            agentId: agentId ?? "",
+            ...(status ? { status } : {}),
+            ...(agentId ? { agentId } : {}),
           },
-          orderBy: [
-            {
-              createdAt: "desc",
-            },
-            { id: "desc" },
-          ],
+          orderBy: [{ createdAt: "desc" }, { id: "desc" }],
           skip: (page - 1) * pageSize,
           take: pageSize,
           include: {
             agent: true,
           },
         });
+
         const total = await ctx.db.meetings.count({
           where: {
             userId: ctx.session.user.id,
@@ -215,7 +211,7 @@ export const meetingsRoute = createTRPCRouter({
 
         return updateMeeting;
       } catch (error) {
-        throw new Error("Serever Issue While updating the Agent");
+        throw new Error("Server Issue While updating the Agent");
       }
     }),
   remove: protectedProcedure
@@ -241,7 +237,7 @@ export const meetingsRoute = createTRPCRouter({
 
         return removeMeeting;
       } catch (error) {
-        throw new Error("Serever Issue While updating the Agent");
+        throw new Error("Server Issue While updating the Agent");
       }
     }),
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {

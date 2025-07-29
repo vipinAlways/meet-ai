@@ -1,7 +1,9 @@
-"use client"
+"use client";
 import { StreamTheme, useCall } from "@stream-io/video-react-sdk";
 import React, { useState } from "react";
 import CallLobby from "./CallLobby";
+import CallActive from "./CallActive";
+import CallEnd from "./CallEnd";
 interface Props {
   meetingName: string;
 }
@@ -23,11 +25,17 @@ const CallUi = ({ meetingName }: Props) => {
     setShow("ended");
   };
   return (
-    <StreamTheme className="h-screen w-full">
-      {show === "lobby" && <CallLobby onJoin={handleJoin} />}
-      {show === "call" && <p>E</p>}
-      {show === "ended" && <p>E</p>}
-    </StreamTheme>
+ 
+      <StreamTheme className="h-screen w-full">
+        {show === "lobby" ? (
+          <CallLobby onJoin={handleJoin} />
+        ) : show === "call" ? (
+          <CallActive onLeave={handleLeave} meetingName={meetingName} />
+        ) : (
+          <CallEnd />
+        )}
+      </StreamTheme>
+   
   );
 };
 

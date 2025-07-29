@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Call,
   CallingState,
@@ -35,7 +35,7 @@ export const CallConnect = ({
     api.meetings.generateToken.useMutation();
   useEffect(() => {
     const client_ = new StreamVideoClient({
-      apiKey: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY ?? "",
+      apiKey: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY!,
       user: {
         id: userId,
         name: userName,
@@ -51,8 +51,6 @@ export const CallConnect = ({
       setClient(undefined);
     };
   }, [userId, generateToken, userName, userImage]);
-
-
 
   useEffect(() => {
     if (!client) {
@@ -73,8 +71,6 @@ export const CallConnect = ({
       }
     };
   }, [client, meetingId]);
-
-  console.log(client , "call" ,call);
 
   if (!client || !call) {
     return (
