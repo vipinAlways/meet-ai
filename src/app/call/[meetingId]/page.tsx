@@ -1,4 +1,4 @@
-import { HydrationBoundary,dehydrate } from "@tanstack/react-query";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 import LoadingState from "~/components/LoadingState";
@@ -13,25 +13,23 @@ const page = async ({ params }: Props) => {
   const { meetingId } = await params;
 
   const session = await auth();
- await api.meetings.getOne.prefetch({id:meetingId})
+  await api.meetings.getOne.prefetch({ id: meetingId });
   if (!session) {
     redirect("/api/auth/authentication");
   }
 
   return (
     <HydrateClient>
-      
-        <Suspense
-          fallback={
-            <LoadingState
-              title="Meeting is starting"
-              description="it may take time"
-            />
-          }
-        >
-          <CallView meetingId={meetingId}/>
-        </Suspense>
-
+      <Suspense
+        fallback={
+          <LoadingState
+            title="Meeting is starting"
+            description="it may take time"
+          />
+        }
+      >
+        <CallView meetingId={meetingId} />
+      </Suspense>
     </HydrateClient>
   );
 };

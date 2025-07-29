@@ -74,7 +74,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
                   className="cursor-pointer"
                   onClick={() => router.push("/meetings")}
                 >
-                  My Agents
+                  My Meeting
                 </span>
               </BreadcrumbLink>
             </BreadcrumbItem>

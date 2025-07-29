@@ -1,6 +1,8 @@
+"use client"
 import {
   Call,
   CallingState,
+  CallState,
   StreamCall,
   StreamVideo,
   StreamVideoClient,
@@ -14,8 +16,10 @@ interface Props {
   userName: string;
   userImage: string;
 }
-import "@stream-io/video-react-sdk/dist/css/style.css";
+import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { api } from "~/trpc/react";
+import { Loader2Icon } from "lucide-react";
+import CallUi from "./CallUi";
 
 export const CallConnect = ({
   meetingId,
@@ -48,13 +52,42 @@ export const CallConnect = ({
     };
   }, [userId, generateToken, userName, userImage]);
 
+
+
   useEffect(() => {
     if (!client) {
       return;
     }
 
+    const call_ = client.call("default", meetingId);
+    call_.camera.disable();
+    call_.microphone.disable();
 
-    const call_ = client.call
-  }, [client]);
-  return <div></div>;
+    setCall(call_);
+
+    return () => {
+      if (call_.state.callingState !== CallingState.LEFT) {
+        call_.leave();
+        call_.endCall();
+        setCall(undefined);
+      }
+    };
+  }, [client, meetingId]);
+
+  console.log(client , "call" ,call);
+
+  if (!client || !call) {
+    return (
+      <div className="from-sidebar-accent flex h-screen items-center justify-center bg-radial">
+        <Loader2Icon className="size-6 animate-spin text-white" />
+      </div>
+    );
+  }
+  return (
+    <StreamVideo client={client}>
+      <StreamCall call={call}>
+        <CallUi meetingName={meetingName} />
+      </StreamCall>
+    </StreamVideo>
+  );
 };

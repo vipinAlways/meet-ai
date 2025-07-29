@@ -10,11 +10,11 @@ import { useMeetingFilters } from "~/hooks/use-meetings-filters";
 import DataPagiNation from "~/components/DataPagiNation";
 
 const Meeting = () => {
-  const router = useRouter()
-  const [filters,setFilters] = useMeetingFilters()
-  const [data] = api.meetings.getMany.useSuspenseQuery({
-    ...filters
-  });
+  const router = useRouter();
+  const [filters, setFilters] = useMeetingFilters();
+
+
+  const [data] = api.meetings.getMany.useSuspenseQuery({...filters});
   if (data.items.length === 0) {
     return (
       <EmptyState
@@ -26,8 +26,16 @@ const Meeting = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-y-4 px-4">
-      <DataTable data={data.items} columns={Meetingcolumns} onRowClick={(row)=>router.push(`/meetings/${row.id}`)} />
-      <DataPagiNation onPageChange={(page)=>setFilters({page})} page={filters.page} totalPage={data.totalPages}/>
+      <DataTable
+        data={data.items}
+        columns={Meetingcolumns}
+        onRowClick={(row) => router.push(`/meetings/${row.id}`)}
+      />
+      <DataPagiNation
+        onPageChange={(page) => setFilters({ page })}
+        page={filters.page}
+        totalPage={data.totalPages}
+      />
     </div>
   );
 };

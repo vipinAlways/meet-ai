@@ -1,6 +1,6 @@
 // "use client";
 // import { Loader2Icon } from "lucide-react";
-// import { useSession } from "next-auth/react";
+// import { useUserData } from "next-auth/react";
 // import React from "react";
 // import { CallConnect } from "./CallConnect";
 // interface Props {
@@ -9,7 +9,7 @@
 // }
 
 // const CallProvider = ({ meetingId, meetingName }: Props) => {
-//   const session = useSession();
+//   const session = useUserData();
 
 //   if (!session.data) {
 //     <div className="from-sidebar-accent flex h-screen items-center justify-center bg-radial">

@@ -7,24 +7,24 @@ import { loadSearchParams } from "./params";
 import type { SearchParams } from "nuqs";
 import { HydrationBoundary } from "@tanstack/react-query";
 
-
-interface Props{
-  searchParams:Promise<SearchParams>
+interface Props {
+  searchParams: Promise<SearchParams>;
 }
 
+const page = async ({ searchParams }: Props) => {
+  const filters = await loadSearchParams(searchParams);
 
-const page = async ({searchParams}:Props) => {
-  const filters = await loadSearchParams(searchParams)
-   await api.meetings.getMany.prefetch({
-      ...filters
-  });
+  if (filters.agentId || filters.search || filters.page || filters.status) {
+    await api.meetings.getMany.prefetch({
+      ...filters,
+    });
+  }
 
   return (
     <>
       <MeetingListHeader />
       <HydrateClient>
-      {/* <HydrationBoundary state={queryClient}> */}
-          <Suspense
+        <Suspense
           fallback={
             <LoadingState
               title="Loading Meeting"
@@ -34,7 +34,6 @@ const page = async ({searchParams}:Props) => {
         >
           <Meeting />
         </Suspense>
-      {/* </HydrationBoundary> */}
       </HydrateClient>
     </>
   );
