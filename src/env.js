@@ -11,12 +11,15 @@ export const env = createEnv({
     GOOGLE_CLIENT_SECRET: z.string(),
     EMAIL_SERVER: z.string(),
     EMAIL_FROM: z.string(),
-    EMAIL_SERVER_HOST:z.string(),
+    EMAIL_SERVER_HOST: z.string(),
     EMAIL_SERVER_PORT: z.number().int(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    OPENAI_API_KEY: z.string(),
+    STREAM_VIDEO_API_KEY: z.string(),
+    STREAM_VIDEO_API_SECRET:z.string()
   },
 
   client: {
@@ -31,8 +34,14 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     EMAIL_SERVER: process.env.EMAIL_SERVER,
     EMAIL_FROM: process.env.EMAIL_SERVER,
-    EMAIL_SERVER_HOST:process.env.EMAIL_SERVER_HOST,
-    EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : undefined
+    EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_HOST,
+    EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT
+      ? parseInt(process.env.EMAIL_SERVER_PORT)
+      : undefined,
+    OPENAI_API_KEY:process.env.OPENAI_API_KEY,
+    STREAM_VIDEO_API_KEY:process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY,
+    STREAM_VIDEO_API_SECRET:process.env.NEXT_PUBLIC_STREAM_VIDEO_API_SECRET,
+
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
