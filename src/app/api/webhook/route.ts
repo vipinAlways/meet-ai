@@ -8,6 +8,7 @@ import type {
 } from "@stream-io/node-sdk";
 
 import { NextRequest, NextResponse } from "next/server";
+import { inngest } from "~/inngest/client";
 import { streamVideo } from "~/lib/stream-videos";
 import { db } from "~/server/db";
 
@@ -99,6 +100,63 @@ export async function POST(req: NextRequest) {
     const call = streamVideo.video.call("default", meetingId);
 
     await call.end();
+  } else if (evenType === "call.session_ended") {
+    const event = payload as CallEndedEvent;
+    const meetingId = event.call.custom?.meetingId;
+
+    if (!meetingId) {
+      return NextResponse.json({ error: "MissingMeetingId" }, { status: 404 });
+    }
+
+    await db.meetings.update({
+      where: {
+        id: meetingId,
+        status: "ACTIVE",
+      },
+      data: {
+        status: "PROCESSING",
+        endedAt: new Date(),
+      },
+    });
+  } else if (evenType === "call.transcription_ready") {
+    const event = payload as CallTranscriptionReadyEvent;
+    const meetingId = event.call_cid.split(":")[1];
+    if (!meetingId) {
+      return NextResponse.json({ error: "MissingMeetingId" }, { status: 404 });
+    }
+
+    const updateMeeting = await db.meetings.update({
+      where: {
+        id: meetingId,
+      },
+      data: {
+        transcripUrl: event.call_transcription.url,
+      },
+    });
+    if (!updateMeeting) {
+      return NextResponse.json({ error: "Meeting not found" }, { status: 404 });
+    }
+    await inngest.send({
+      name:"meetings/processing",
+      data:{
+        meetingId:updateMeeting.id,
+        transcriptipUrl:updateMeeting.transcripUrl
+      }
+    })
+  } else if (evenType === "call.recording_ready") {
+    const event = payload as CallRecordingReadyEvent;
+    const meetingId = event.call_cid.split(":")[1];
+    if (!meetingId) {
+      return NextResponse.json({ error: "MissingMeetingId" }, { status: 404 });
+    }
+    await db.meetings.update({
+      where: {
+        id: meetingId,
+      },
+      data: {
+        recordingUrl: event.call_recording.url,
+      },
+    });
   }
 
   return NextResponse.json({ status: "ok" });
