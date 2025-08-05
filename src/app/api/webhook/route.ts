@@ -1,3 +1,4 @@
+"use server"
 import type {
   CallEndedEvent,
   MessageNewEvent,
@@ -18,7 +19,7 @@ function verifySignatureWithSDK(body: string, signature: string): boolean {
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("x-signature");
-  const apiKey = req.headers.get("x-api-key");
+  const apiKey = req.headers.get("x-api-key") ?? req.headers.get("X-API-KEY");
 
   if (!signature || !apiKey) {
     return NextResponse.json(
@@ -130,19 +131,19 @@ export async function POST(req: NextRequest) {
         id: meetingId,
       },
       data: {
-        transcripUrl: event.call_transcription.url,
+        transcriptUrl: event.call_transcription.url,
       },
     });
     if (!updateMeeting) {
       return NextResponse.json({ error: "Meeting not found" }, { status: 404 });
     }
     await inngest.send({
-      name:"meetings/processing",
-      data:{
-        meetingId:updateMeeting.id,
-        transcriptipUrl:updateMeeting.transcripUrl
-      }
-    })
+      name: "meetings/processing",
+      data: {
+        meetingId: updateMeeting.id,
+        transcriptUrl: updateMeeting.transcriptUrl,
+      },
+    });
   } else if (evenType === "call.recording_ready") {
     const event = payload as CallRecordingReadyEvent;
     const meetingId = event.call_cid.split(":")[1];

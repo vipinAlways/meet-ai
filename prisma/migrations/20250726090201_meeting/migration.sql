@@ -8,7 +8,7 @@ CREATE TABLE "meetings" (
     "userId" TEXT NOT NULL,
     "agentId" TEXT NOT NULL,
     "summary" TEXT,
-    "transcripUrl" TEXT,
+    "transcriptUrlrl" TEXT,
     "recordingUrl" TEXT,
     "status" "MeetingStatus" NOT NULL,
     "startedAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,

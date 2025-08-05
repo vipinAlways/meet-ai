@@ -83,7 +83,7 @@ model meetings {
     agentId   String
     agent     agents        @relation(fields: [agentId], references: [id], onDelete: Cascade)
     summary   String?
-    transcripUrl String?
+    transcriptUrl String?
     recordingUrl String?
     status    MeetingStatus
     startedAt DateTime?     @default(now())
