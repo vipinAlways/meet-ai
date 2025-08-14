@@ -23,7 +23,18 @@ export const meetingsRoute = createTRPCRouter({
             message: "Not able to find meeting",
           });
         }
-        return data;
+        const resultWithDuration = {
+          ...data,
+          duration:
+            (new Date(data.endedAt).getTime() -
+              new Date(data.startedAt!).getTime()) /
+            1000,
+        };
+
+        return {
+          data:meetingsRoute,
+          duration:resultWithDuration
+        };
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

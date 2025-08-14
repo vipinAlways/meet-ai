@@ -29,6 +29,7 @@ import { CiMenuKebab } from "react-icons/ci";
 import { toast } from "sonner";
 import UpdateMeetingDialog from "./UpdateMeetingDialog";
 import EmptyState from "~/components/EmptyState";
+import CompletedState from "~/app/call/components/CompletedState";
 
 const MeetingId = ({ meetingId }: { meetingId: string }) => {
   const [data] = api.meetings.getOne.useSuspenseQuery({ id: meetingId });
@@ -151,7 +152,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
           </div>
         </div>
       )}
-      {isCompleted && <div>{data.status}</div>}
+      {isCompleted && <div><CompletedState data={data}/></div>}
       {isUpcoming && (
         <div>
           <div className="flex flex-col items-center gap-y-8 rounded bg-white px-4 py-4">

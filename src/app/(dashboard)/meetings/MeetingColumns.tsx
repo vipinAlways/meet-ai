@@ -15,15 +15,7 @@ import {
 
 import GeneratedAvatar from "~/components/GeneratedAvatar";
 import { Badge } from "~/components/ui/badge";
-import { cn } from "~/lib/utils";
-
-function formateDuration(second: number) {
-  return humanizeDuration(second * 10000, {
-    largest: 1,
-    round: true,
-    units: ["h", "m", "s"],
-  });
-}
+import { cn, formateDuration } from "~/lib/utils";
 
 const statusIconMap = {
   UPCOMING: ClockArrowUpIcon,
