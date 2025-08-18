@@ -17,12 +17,14 @@ export const meetingsRoute = createTRPCRouter({
             agent: true,
           },
         });
+
         if (!data) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "Not able to find meeting",
           });
         }
+
         const resultWithDuration = {
           ...data,
           duration:
@@ -31,10 +33,7 @@ export const meetingsRoute = createTRPCRouter({
             1000,
         };
 
-        return {
-          data:meetingsRoute,
-          duration:resultWithDuration
-        };
+        return resultWithDuration; // ✅ only return JSON
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

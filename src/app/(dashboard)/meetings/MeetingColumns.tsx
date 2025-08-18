@@ -58,7 +58,7 @@ export const Meetingcolumns: ColumnDef<
             <span className='font-semibold capitalize'>
               {row.original.startedAt
                 ? format(row.original.startedAt, 'MM/d')
-                : '}
+                : ""}
             </span>
           </div>
         </div>

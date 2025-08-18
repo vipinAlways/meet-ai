@@ -86,7 +86,7 @@ const CompletedState = ({ data }: Props) => {
               </div>
               <Badge variant={"outline"} className="flex items-center gap-x-2 [&svg]:size-4">
                         <ClockFadingIcon className="size-4"/>
-                        {data.}
+                        
               </Badge>
             </div>
           </div>

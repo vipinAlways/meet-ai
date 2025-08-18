@@ -1,7 +1,7 @@
 import JSONL from "jsonl-parse-stringify";
 import { inngest } from "./client";
 import { db } from "~/server/db";
-import type { StreamTransriptItem } from "~/lib/type";
+import type { StreamTranscriptItem } from "~/lib/type";
 import { summarizer } from "~/lib/agent";
 import type { TextMessage } from "@inngest/agent-kit";
 
@@ -14,7 +14,7 @@ export const meetingProcess = inngest.createFunction(
     });
 
     const transcript = await step.run("parse-transcript", async () => {
-      return JSONL.parse<StreamTransriptItem>(response);
+      return JSONL.parse<StreamTranscriptItem>(response);
     });
 
     const transcriptWithSpeakers = await step.run("add-speakers", async () => {

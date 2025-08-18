@@ -58,6 +58,17 @@ export const CallConnect = ({
     }
 
     const call_ = client.call("default", meetingId);
+    call_
+      .join({ create: true }) // `create: true` ensures the call is created if missing
+      .then(() => {
+        call_.camera.disable();
+        call_.microphone.disable();
+        setCall(call_);
+      })
+      .catch((err) => {
+        console.error("Failed to join call:", err);
+      });
+
     call_.camera.disable();
     call_.microphone.disable();
 

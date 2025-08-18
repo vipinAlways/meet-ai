@@ -23,7 +23,7 @@ export enum MeetingStatus {
 }
 
 
-export type StreamTransriptItem = {
+export type StreamTranscriptItem = {
   speaker_id:string,
   type:string;
   text:string;
