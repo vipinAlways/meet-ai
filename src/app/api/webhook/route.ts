@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import type {
   CallEndedEvent,
   MessageNewEvent,
@@ -19,9 +19,9 @@ function verifySignatureWithSDK(body: string, signature: string): boolean {
 
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("x-signature");
-  const apiKey = req.headers.get("x-api-key") ?? req.headers.get("X-API-KEY");
+  // const apiKey = req.headers.get("x-api-key") ?? req.headers.get("X-API-KEY");
 
-  if (!signature || !apiKey) {
+  if (!signature ) {
     return NextResponse.json(
       {
         error: "missing signature or Api Key",
@@ -29,6 +29,9 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     );
   }
+
+  console.log("Signature:", signature);
+  console.log("API Key:");
 
   const body = await req.text();
 
@@ -113,7 +116,7 @@ export async function POST(req: NextRequest) {
       where: {
         id: meetingId,
         status: "ACTIVE",
-      },
+      },  
       data: {
         status: "PROCESSING",
         endedAt: new Date(),

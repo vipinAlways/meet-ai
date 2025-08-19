@@ -14,12 +14,43 @@ import GeneratedAvatar from "~/components/GeneratedAvatar";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import type { MeetingGetOne } from "~/lib/type";
-import {format} from "date-fns"
+import { format } from "date-fns";
 import { Badge } from "~/components/ui/badge";
+import humanizeDuration from "humanize-duration";
+import { formateDuration } from "~/lib/utils";
+import Markdown, { type Components } from "react-markdown";
 interface Props {
   data: MeetingGetOne;
 }
+
 const CompletedState = ({ data }: Props) => {
+  const components: Components = {
+    h1: ({ children, ...props }) => (
+      <h1 className="text-2xl font-medium" {...props}>
+        {children}
+      </h1>
+    ),
+    h2: ({ children, ...props }) => (
+      <h2 className="text-xl font-medium" {...props}>
+        {children}
+      </h2>
+    ),
+    h3: ({ children, ...props }) => (
+      <h3 className="text-lg font-medium" {...props}>
+        {children}
+      </h3>
+    ),
+    h4: ({ children, ...props }) => (
+      <h4 className="text-base font-medium" {...props}>
+        {children}
+      </h4>
+    ),
+    p: ({ children, ...props }) => (
+      <p className="mb-6 leading-relaxed" {...props}>
+        {children}
+      </p>
+    ),
+  };
   return (
     <div className="flex flex-col gap-y-4">
       <Tabs defaultValue="summary">
@@ -75,19 +106,32 @@ const CompletedState = ({ data }: Props) => {
                   href={`/agents/${data.agent.id}`}
                   className="flex items-center gap-x-2 capitalize underline underline-offset-4"
                 >
-                    <GeneratedAvatar seed={data.agent.name} variant="bottsNeutral" className="size-5" />
-                    {data.agent.name}
+                  <GeneratedAvatar
+                    seed={data.agent.name}
+                    variant="bottsNeutral"
+                    className="size-5"
+                  />
+                  {data.agent.name}
                 </Link>
-                <p>{data.startedAt ?  format(data.startedAt,"PPP"): ""}</p>
+                <p>{data.startedAt ? format(data.startedAt, "PPP") : ""}</p>
               </div>
-              <div className="flex gap-x-2 items-center">
-                <SparklesIcon className="size-4"/>
+              <div className="flex items-center gap-x-2">
+                <SparklesIcon className="size-4" />
                 <p>General summary</p>
               </div>
-              <Badge variant={"outline"} className="flex items-center gap-x-2 [&svg]:size-4">
-                        <ClockFadingIcon className="size-4"/>
-                        
+              <Badge
+                variant={"outline"}
+                className="flex items-center gap-x-2 [&svg]:size-4"
+              >
+                <ClockFadingIcon className="size-4" />
+                {data.duration ? formateDuration(data.duration) : "no duration"}
               </Badge>
+
+              <div>
+                <Markdown components={components}>
+                  {data.summary ?? ""}
+                </Markdown>
+              </div>
             </div>
           </div>
         </TabsContent>

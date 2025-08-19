@@ -20,14 +20,9 @@ const CallUi = ({ meetingName }: Props) => {
   };
   const handleLeave = async () => {
     if (!call) return;
-    try {
-      await call.join();
-      setShow("call");
-      await call.leave();
-      setShow("ended");
-    } catch (error) {
-      console.error("Failed to join call", error);
-    }
+
+    await call.endCall();
+    setShow("ended");
   };
   return (
     <StreamTheme className="h-screen w-full">

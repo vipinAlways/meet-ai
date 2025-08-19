@@ -27,6 +27,6 @@ const CallActive = ({ meetingName, onLeave }: Props) => {
       </div>
     </div>
   );
-};
+};  
 
 export default CallActive;

@@ -12,7 +12,7 @@
     "db:push": "prisma db push",
     "studio": "prisma studio",
     "dev": "next dev --turbo",
-    "inngest": "inngest dev",  
+    "inngest": "inngest dev",
     "webhook": "ngrok http --url=teaching-evenly-salmon.ngrok-free.app 3000",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
