@@ -10,7 +10,7 @@ import {
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { useUserData } from "~/hooks/use-user-data";
-import { useSession } from "next-auth/react";
+
 import generateAvatatUri from "~/lib/avatar";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";

@@ -56,7 +56,7 @@ export const UserButton = () => {
           <div className="flex min-w-8 flex-1 flex-col gap-0.5 overflow-hidden text-left">
             <p className="w-full truncate text-sm">
               {" "}
-              {data.name || "User"}
+              {data.name ?? "User"}
             </p>
             <p className="w-full truncate text-xs">{data.email}</p>
           </div>
@@ -102,7 +102,7 @@ export const UserButton = () => {
         )}
 
         <div className="flex min-w-8 flex-1 flex-col gap-0.5 overflow-hidden text-left">
-          <p className="w-full truncate text-sm"> {data.name || "User"}</p>
+          <p className="w-full truncate text-sm"> {data.name ?? "User"}</p>
           <p className="w-full truncate text-xs">{data.email}</p>
         </div>
         <ChevronDownIcon className="size-4 shrink-0" />
@@ -112,10 +112,10 @@ export const UserButton = () => {
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
             <span className="truncate font-medium">
-              {data.name || "user"}
+              {data.name ?? "user"}
             </span>
             <span className="text-muted-foreground truncate text-sm font-normal">
-              {data.email || "Email"}
+              {data.email ?? "Email"}
             </span>
           </div>
         </DropdownMenuLabel>

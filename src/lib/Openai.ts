@@ -6,10 +6,9 @@ if (!process.env.OPENAI_API_KEY) {
 
 export const client = new OpenAI({
   baseURL: "https://api.sambanova.ai/v1",
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY ?? "",
 });
 
-// ===================================
 
 
 export interface StreamTransriptItem {
