@@ -3,17 +3,12 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import React, { useState } from "react";
 import { api } from "~/trpc/react";
-import Link from "next/link";
+
 import {
   ChevronRightIcon,
-  DotIcon,
-  MoreVerticalIcon,
   PencilIcon,
   TrashIcon,
   VideoIcon,

@@ -4,9 +4,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+
 } from "~/components/ui/breadcrumb";
 import { api } from "~/trpc/react";
 import Link from "next/link";

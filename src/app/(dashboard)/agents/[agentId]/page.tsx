@@ -1,4 +1,3 @@
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 import React, { Suspense } from "react";
 import LoadingState from "~/components/LoadingState";
 import { api, HydrateClient } from "~/trpc/server";

@@ -5,7 +5,7 @@ import LoadingState from "~/components/LoadingState";
 import MeetingListHeader from "~/components/MeetingListHeader";
 import { loadSearchParams } from "./params";
 import type { SearchParams } from "nuqs";
-import { HydrationBoundary } from "@tanstack/react-query";
+
 
 interface Props {
   searchParams: Promise<SearchParams>;

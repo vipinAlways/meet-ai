@@ -3,7 +3,6 @@
 import { type ColumnDef } from '@tanstack/react-table';
 import type { MeetingGetMAny } from '~/lib/type';
 import { format } from 'date-fns';
-import humanizeDuration from 'humanize-duration';
 import {
   CircleCheckIcon,
   CircleXIcon,
