@@ -19,6 +19,7 @@ import { Badge } from "~/components/ui/badge";
 import humanizeDuration from "humanize-duration";
 import { formateDuration } from "~/lib/utils";
 import Markdown, { type Components } from "react-markdown";
+import Transcript from "./Transcript";
 interface Props {
   data: MeetingGetOne;
 }
@@ -88,6 +89,10 @@ const CompletedState = ({ data }: Props) => {
             </TabsList>
           </ScrollArea>
         </div>
+        <TabsContent value="transcript"
+        >
+          <Transcript meetingId = {data.id}/>
+        </TabsContent>
         <TabsContent value="recording">
           <div className="rounded-lg border bg-white px-4 py-5">
             <video

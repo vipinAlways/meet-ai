@@ -37,12 +37,12 @@ const secondSection = [
     href: "/upgrade",
   },
 ];
-const Navbar = () => {
+export const Navbar = () => {
   const pathName = usePathname();
 
   return (
     <Sidebar>
-      <SidebarHeader className="text-sidebar-accent-foreground">
+      <SidebarHeader className="text-sidebar-accent-foreground ">
         <Link
           href={"/"}
           className="flex items-center gap-4 border-b-2 pt-2 pb-4"
@@ -119,4 +119,3 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;

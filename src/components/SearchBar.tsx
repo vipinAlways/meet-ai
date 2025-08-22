@@ -27,9 +27,9 @@ const SearchBar = () => {
   },[])
   
   return (
- <>
-    <DashboarCommand open={commandOpen} setOpen={setCommandOpen}/>
+
     <nav className="bg-background flex items-center gap-x-2 border-b px-4 py-3 text-white">
+    <DashboarCommand open={commandOpen} setOpen={setCommandOpen}/>
       <Button
         className="size-9 text-black"
         variant="outline"
@@ -53,7 +53,7 @@ const SearchBar = () => {
         <kbd className="ml-auto pointer-events-auto inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground"> <span className="text-xs">&#8984;</span> K</kbd>
       </Button>
     </nav>
- </>
+
   );
 };
 

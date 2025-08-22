@@ -1,12 +1,99 @@
 import { TRPCError } from "@trpc/server";
+import JSONL from "jsonl-parse-stringify";
 import z, { custom } from "zod";
 import generateAvatatUri from "~/lib/avatar";
 import { streamVideo } from "~/lib/stream-videos";
-import { MeetingStatus } from "~/lib/type";
+import { MeetingStatus, type StreamTranscriptItem } from "~/lib/type";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
 
 export const meetingsRoute = createTRPCRouter({
+  getTranscript: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const existingMeeting = await db.meetings.findUnique({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id,
+        },
+      });
+      if (!existingMeeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "not able to find the meeting",
+        });
+      }
+
+      if (!existingMeeting.transcriptUrl) {
+        return [];
+      }
+      const transcript = await fetch(existingMeeting.transcriptUrl)
+        .then((res) => res.text())
+        .then((text) => JSONL.parse<StreamTranscriptItem>(text))
+        .catch(() => []);
+
+      const speakerIds = [
+        ...new Set(transcript.map((item) => item.speaker_id)),
+      ];
+
+      const userSpeakers = await ctx.db.user
+        .findMany({
+          where: {
+            id: {
+              in: speakerIds,
+            },
+          },
+        })
+        .then((users) =>
+          users.map((user) => ({
+            ...user,
+            image:
+              user.image ??
+              generateAvatatUri({ seed: user.name!, variant: "initials" }),
+          })),
+        );
+      const agentsSpeakers = await ctx.db.agents
+        .findMany({
+          where: {
+            id: {
+              in: speakerIds,
+            },
+          },
+        })
+        .then((agents) =>
+          agents.map((agent) => ({
+            ...agent,
+            image:
+              generateAvatatUri({ seed: agent.name!, variant: "initials" }),
+          })),
+        );
+
+        const speakers = [...userSpeakers  , ...agentsSpeakers]
+
+        const transcriptWithSpeakers = transcript.map(item => {
+          const speaker = speakers.find(speak=>speak.id === item.speaker_id)
+
+          if(!speaker){
+            return {
+              ...item,
+              user:{
+                name:"UNKNOWN",
+                image:generateAvatatUri({seed:"UNKNOWN",variant:"initials"})
+              }
+            }
+          }
+
+          return {
+            ...item,
+            user:{
+              name:speaker.name,
+              image:speaker.image
+            }
+          }
+        })
+
+        return transcriptWithSpeakers
+    }),
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {

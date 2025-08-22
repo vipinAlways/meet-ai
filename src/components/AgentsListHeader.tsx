@@ -39,7 +39,7 @@ const AgentsListHeader = () => {
 
       <ScrollArea>
           <div className="flex items-center gap-x-2 p-1">
-          <SearchFilter filters={filters} setFilters={setFilters}/>
+          <SearchFilter/>
           {isAnyFilterModified && (
             <Button
               variant={"outline"}
