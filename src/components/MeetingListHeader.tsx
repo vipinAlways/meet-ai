@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { PlusIcon, XCircleIcon } from "lucide-react";
 import NewMeetingDialog from "./NewMeetingDialog";
-import SearchFilter from "./AgentsSearchFilter";
 import { useMeetingFilters } from "~/hooks/use-meetings-filters";
 import StatusFilter from "./StatusFilter";
 import { AgentIdFilter } from "~/app/(dashboard)/meetings/AgentIdFilter";
@@ -17,8 +16,8 @@ const MeetingListHeader = () => {
   const isAnyFilterModified =
     !!filters.search || !!filters.status || !!filters.agentId;
 
-  const onClearFilters = () => {
-    setFilters({
+  const onClearFilters = async() => {
+    await setFilters({
       status: null,
       agentId: "",
       search: "",

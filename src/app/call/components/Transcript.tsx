@@ -10,7 +10,7 @@ import { formatDate } from "date-fns";
 
 const Transcript = ({ meetingId }: { meetingId: string }) => {
   const [searchQery, setSearchQuery] = useState<string>("");
-  const { data, isPending } = api.meetings.getTranscript.useQuery({
+  const { data } = api.meetings.getTranscript.useQuery({
     id: meetingId,
   });
   const filterData =

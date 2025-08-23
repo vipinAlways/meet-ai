@@ -1,8 +1,7 @@
 "use client";
 import {
-  Call,
+  type Call,
   CallingState,
-  CallState,
   StreamCall,
   StreamVideo,
   StreamVideoClient,
@@ -47,8 +46,12 @@ export const CallConnect = ({
     setClient(client_);
 
     return () => {
-      client_.disconnectUser();
-      setClient(undefined);
+      async () => {
+        {
+          await client_.disconnectUser();
+          setClient(undefined);
+        }
+      };
     };
   }, [userId, generateToken, userName, userImage]);
 

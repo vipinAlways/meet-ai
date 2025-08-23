@@ -15,8 +15,8 @@ const AgentsListHeader = () => {
   
   const isAnyFilterModified = !!filters.search;
 
-  const onClearFilters = () => {
-    setFilters({
+  const onClearFilters =async () => {
+    await setFilters({
       search: "",
       page: 1,
     });

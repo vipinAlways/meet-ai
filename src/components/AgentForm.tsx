@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import type { AgentGetOne } from "~/lib/type";
@@ -36,8 +34,8 @@ const AgentForm = ({ initialValues, onCancel, onSuccess }: AgentFormProps) => {
   const form = useForm<z.infer<typeof agentFormSchema>>({
     resolver: zodResolver(agentFormSchema),
     defaultValues: {
-      name: initialValues?.name || "",
-      instructions: initialValues?.instructions || "",
+      name: initialValues?.name ?? "",
+      instructions: initialValues?.instructions ?? "",
     },
   });
 
@@ -68,7 +66,7 @@ const AgentForm = ({ initialValues, onCancel, onSuccess }: AgentFormProps) => {
   });
 
   const isEdit = !!initialValues?.id;
-  const isPending = createMutate.isPending || updateMutate.isPending;
+  const isPending = createMutate.isPending ?? updateMutate.isPending;
   const onSubmit = (values: z.infer<typeof agentFormSchema>) => {
     if (isEdit) {
       updateMutate.mutate({ ...values, id: initialValues.id });

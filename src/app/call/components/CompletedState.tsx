@@ -16,7 +16,7 @@ import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import type { MeetingGetOne } from "~/lib/type";
 import { format } from "date-fns";
 import { Badge } from "~/components/ui/badge";
-import humanizeDuration from "humanize-duration";
+
 import { formateDuration } from "~/lib/utils";
 import Markdown, { type Components } from "react-markdown";
 import Transcript from "./Transcript";
@@ -100,6 +100,11 @@ const CompletedState = ({ data }: Props) => {
               className="w-full rounded-lg"
               controls
             />
+          </div>
+        </TabsContent>
+        <TabsContent value="chat">
+          <div className="rounded-lg border bg-white px-4 py-5">
+            <h1>Not able because of api key </h1>
           </div>
         </TabsContent>
         <TabsContent value="summary">

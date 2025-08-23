@@ -1,10 +1,6 @@
 "use client";
 import { Loader2Icon } from "lucide-react";
 
-import { useRouter } from "next/navigation";
-
-import React, { useEffect } from "react";
-
 interface Props {
   title: string;
   description: string;

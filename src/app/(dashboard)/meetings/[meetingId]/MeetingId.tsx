@@ -15,7 +15,7 @@ import {
   TrashIcon,
   VideoIcon,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,7 +33,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
   const [data] = api.meetings.getOne.useSuspenseQuery({ id: meetingId });
   const router = useRouter();
   const [onDialogOpen, setOnDialogOpen] = useState(false);
-  const [isCancelling, setIsCancelling] = useState(false);
+  const [isCancelling] = useState(false);
   const utils = api.useUtils();
   const removeMeeting = api.meetings.remove.useMutation({
     onSuccess: async () => {
@@ -41,7 +41,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
       toast("Agent has been removed", {});
       router.push("/meetings");
     },
-    onError: (error:any) => {
+    onError: (error) => {
       toast.error(error.message);
     },
   });
@@ -164,7 +164,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
               <Button
                 variant={"secondary"}
                 className="w-full lg:w-auto"
-                onClick={() => {}}
+                onClick={() => {redirect("/meetings")}}
                 disabled={isCancelling}
               >
                 <BanIcon />

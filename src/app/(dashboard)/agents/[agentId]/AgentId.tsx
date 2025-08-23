@@ -35,7 +35,6 @@ const AgentId = ({ agentId }: Props) => {
   const [data] = api.agents.getOne.useSuspenseQuery({ id: agentId });
   const router = useRouter();
   const utils = api.useUtils();
-  const route = useRouter();
   const [updateAgentDilogOpen, setUpdateAgentDilogOpen] = useState(false);
   const removeAgent = api.agents.remove.useMutation({
     onSuccess: async () => {

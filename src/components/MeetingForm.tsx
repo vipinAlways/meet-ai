@@ -1,4 +1,3 @@
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,9 +17,7 @@ import {
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-import { UserSearch } from "lucide-react";
 import CommandSelect from "./CommandSelect";
-import { id } from "zod/v4/locales";
 import GeneratedAvatar from "./GeneratedAvatar";
 import NewAgentDialog from "./newAgentDialog";
 
@@ -49,13 +46,13 @@ const MeetingForm = ({
     },
   });
   const [agentSearch, setAgentSearch] = useState("");
-  const [open, setOpen] = useState(false);
+  
   const [openNewAgentDialog, setOpenNewAgentDialog] = useState(false);
   const query = api.agents.getMany.useQuery({
     pageSize: 100,
     search: agentSearch,
   });
-  const router = useRouter()
+  
   const utils = api.useUtils();
 
   const createMutate = api.meetings.create.useMutation({

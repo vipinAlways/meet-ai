@@ -1,14 +1,13 @@
 "use server";
 import type {
   CallEndedEvent,
-  MessageNewEvent,
   CallTranscriptionReadyEvent,
   CallSessionParticipantLeftEvent,
   CallRecordingReadyEvent,
   CallSessionStartedEvent,
 } from "@stream-io/node-sdk";
 
-import { NextRequest, NextResponse } from "next/server";
+import {type NextRequest, NextResponse } from "next/server";
 import { inngest } from "~/inngest/client";
 import { streamVideo } from "~/lib/stream-videos";
 import { db } from "~/server/db";
@@ -43,7 +42,8 @@ export async function POST(req: NextRequest) {
   try {
     payload = JSON.parse(body) as Record<string, unknown>;
   } catch (error) {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    console.log(error);
+    return NextResponse.json({ error: "Invalid JSON"  }, { status: 400 });
   }
 
   const evenType = (payload as Record<string, unknown>)?.type;

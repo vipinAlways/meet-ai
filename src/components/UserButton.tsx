@@ -27,6 +27,7 @@ import { useIsMobile } from "~/hooks/use-mobile";
 
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { api } from "~/trpc/react";
+import { toast } from "sonner";
 
 export const UserButton = () => {
   const { data } = api.user.existingUser.useQuery();
@@ -70,7 +71,7 @@ export const UserButton = () => {
           </DrawerHeader>
 
           <DrawerFooter>
-            <Button variant={"outline"} onClick={() => {}}>
+            <Button variant={"outline"} onClick={() => {toast("Coming Soon")}}>
               <CreditCardIcon className="size-4 text-black" />
               Billing
             </Button>

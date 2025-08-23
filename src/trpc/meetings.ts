@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import JSONL from "jsonl-parse-stringify";
-import z, { custom } from "zod";
+import z from "zod";
 import generateAvatatUri from "~/lib/avatar";
 import { streamVideo } from "~/lib/stream-videos";
 import { MeetingStatus, type StreamTranscriptItem } from "~/lib/type";
@@ -64,7 +64,7 @@ export const meetingsRoute = createTRPCRouter({
           agents.map((agent) => ({
             ...agent,
             image:
-              generateAvatatUri({ seed: agent.name!, variant: "initials" }),
+              generateAvatatUri({ seed: agent.name, variant: "initials" }),
           })),
         );
 
@@ -308,6 +308,7 @@ export const meetingsRoute = createTRPCRouter({
 
         return updateMeeting;
       } catch (error) {
+        console.log(error);
         throw new Error("Server Issue While updating the Agent");
       }
     }),
@@ -334,7 +335,7 @@ export const meetingsRoute = createTRPCRouter({
 
         return removeMeeting;
       } catch (error) {
-        throw new Error("Server Issue While updating the Agent");
+        throw new Error("Server Issue While updating the Agent" + error);
       }
     }),
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {

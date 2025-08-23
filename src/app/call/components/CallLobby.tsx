@@ -23,7 +23,7 @@ interface Props {
 const DisableVideoPreview = () => {
   const { user } = useUserData();
   if (!user?.image || !user.name) {
-    console.log(user?.image || user?.name, "name hian ");
+    console.log(user?.image ?? user?.name, "name hian ");
   }
 
   return (
@@ -49,8 +49,7 @@ const AllowBrowserPermission = () => {
 
 export default function CallLobby({ onJoin }: Props) {
   const { useCameraState, useMicrophoneState } = useCallStateHooks();
-  const { user } = useUserData();
-  const { hasBrowserPermission: hasMicroPermission } = useMicrophoneState();
+    const { hasBrowserPermission: hasMicroPermission } = useMicrophoneState();
   const { hasBrowserPermission: hasCameraPermission } = useCameraState();
 
   const hasBrowserMediaPermission = hasCameraPermission && hasMicroPermission;

@@ -9,7 +9,7 @@ export const clearVerificationTokens = async()=>{
     },
   },
 });
-    }catch(error){
+    }catch(error:string | unknown){
         throw new Error(`Failed to clear verification tokens: ${error}`);
     }
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
-import { useAgentFilters } from "~/hooks/use-agents-filters";
 import { useMeetingFilters } from "~/hooks/use-meetings-filters";
 
 const MeetingsSearchFilter = () => {
