@@ -63,36 +63,38 @@ export const meetingsRoute = createTRPCRouter({
         .then((agents) =>
           agents.map((agent) => ({
             ...agent,
-            image:
-              generateAvatatUri({ seed: agent.name, variant: "initials" }),
+            image: generateAvatatUri({ seed: agent.name, variant: "initials" }),
           })),
         );
 
-        const speakers = [...userSpeakers  , ...agentsSpeakers]
+      const speakers = [...userSpeakers, ...agentsSpeakers];
 
-        const transcriptWithSpeakers = transcript.map(item => {
-          const speaker = speakers.find(speak=>speak.id === item.speaker_id)
+      const transcriptWithSpeakers = transcript.map((item) => {
+        const speaker = speakers.find((speak) => speak.id === item.speaker_id);
 
-          if(!speaker){
-            return {
-              ...item,
-              user:{
-                name:"UNKNOWN",
-                image:generateAvatatUri({seed:"UNKNOWN",variant:"initials"})
-              }
-            }
-          }
-
+        if (!speaker) {
           return {
             ...item,
-            user:{
-              name:speaker.name,
-              image:speaker.image
-            }
-          }
-        })
+            user: {
+              name: "UNKNOWN",
+              image: generateAvatatUri({
+                seed: "UNKNOWN",
+                variant: "initials",
+              }),
+            },
+          };
+        }
 
-        return transcriptWithSpeakers
+        return {
+          ...item,
+          user: {
+            name: speaker.name,
+            image: speaker.image,
+          },
+        };
+      });
+
+      return transcriptWithSpeakers;
     }),
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
@@ -334,8 +336,8 @@ export const meetingsRoute = createTRPCRouter({
           });
 
         return removeMeeting;
-      } catch (error) {
-        throw new Error("Server Issue While updating the Agent" + error);
+      } catch (error: string | any) {
+        throw new Error("Server Issue While updating the Agent", error);
       }
     }),
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {

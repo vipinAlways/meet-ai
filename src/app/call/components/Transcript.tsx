@@ -1,6 +1,5 @@
 import { CiSearch } from "react-icons/ci";
 import React, { useState } from "react";
-import Highlighter from "react-highlight-words";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Input } from "~/components/ui/input";
 import { ScrollArea } from "~/components/ui/scroll-area";
@@ -13,11 +12,9 @@ const Transcript = ({ meetingId }: { meetingId: string }) => {
   const { data } = api.meetings.getTranscript.useQuery({
     id: meetingId,
   });
-  const filterData =
-    data &&
-    data.filter((item) =>
-      item.text.toString().toLowerCase().includes(searchQery.toLowerCase()),
-    );
+  const filterData = data?.filter((item) =>
+    item.text.toString().toLowerCase().includes(searchQery.toLowerCase()),
+  );
   return (
     <div className="flex w-full flex-col gap-y-4 rounded-lg border bg-white px-4 py-5">
       <p className="text-sm font-medium">Transcript</p>

@@ -46,43 +46,60 @@ export const CallConnect = ({
     setClient(client_);
 
     return () => {
-      async () => {
-        {
+      void (async () => {
+        try {
           await client_.disconnectUser();
+        } catch (err) {
+          console.error("Failed to disconnect user:", err);
+        } finally {
           setClient(undefined);
         }
-      };
+      })();
     };
   }, [userId, generateToken, userName, userImage]);
 
   useEffect(() => {
-    if (!client) {
-      return;
-    }
+    if (!client) return;
 
+    let isMounted = true;
     const call_ = client.call("default", meetingId);
-    call_
-      .join({ create: true }) // `create: true` ensures the call is created if missing
-      .then(() => {
-        call_.camera.disable();
-        call_.microphone.disable();
-        setCall(call_);
-      })
-      .catch((err) => {
+
+    const setupCall = async () => {
+      try {
+        await call_.join({ create: true });
+        await call_.camera.disable();
+        await call_.microphone.disable();
+
+        if (isMounted) {
+          setCall(call_);
+        }
+      } catch (err) {
         console.error("Failed to join call:", err);
-      });
+        try {
+          await call_.endCall();
+        } catch (endErr) {
+          console.error("Error ending call after failure:", endErr);
+        }
+      }
+    };
 
-    call_.camera.disable();
-    call_.microphone.disable();
-
-    setCall(call_);
+    setupCall();
 
     return () => {
-      if (call_.state.callingState !== CallingState.LEFT) {
-        call_.leave();
-        call_.endCall();
-        setCall(undefined);
-      }
+      isMounted = false;
+
+      (async () => {
+        try {
+          if (call_.state.callingState !== CallingState.LEFT) {
+            await call_.leave();
+            await call_.endCall();
+          }
+        } catch (err) {
+          console.error("Error cleaning up call:", err);
+        } finally {
+          setCall(undefined);
+        }
+      })();
     };
   }, [client, meetingId]);
 

@@ -7,7 +7,7 @@ import type {
   CallSessionStartedEvent,
 } from "@stream-io/node-sdk";
 
-import {type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { inngest } from "~/inngest/client";
 import { streamVideo } from "~/lib/stream-videos";
 import { db } from "~/server/db";
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   const signature = req.headers.get("x-signature");
   // const apiKey = req.headers.get("x-api-key") ?? req.headers.get("X-API-KEY");
 
-  if (!signature ) {
+  if (!signature) {
     return NextResponse.json(
       {
         error: "missing signature or Api Key",
@@ -43,14 +43,14 @@ export async function POST(req: NextRequest) {
     payload = JSON.parse(body) as Record<string, unknown>;
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: "Invalid JSON"  }, { status: 400 });
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   const evenType = (payload as Record<string, unknown>)?.type;
 
   if (evenType === "call.session_started") {
     const event = payload as CallSessionStartedEvent;
-    const meetingId = event.call.custom?.meetingId;
+    const meetingId: string = event.call.custom?.meetingId;
     if (!meetingId) {
       return NextResponse.json({ error: "MissingMeetingId" }, { status: 404 });
     }
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
       where: {
         id: meetingId,
         status: "ACTIVE",
-      },  
+      },
       data: {
         status: "PROCESSING",
         endedAt: new Date(),

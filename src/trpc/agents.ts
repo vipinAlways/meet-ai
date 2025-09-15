@@ -129,6 +129,7 @@ export const agentsRoute = createTRPCRouter({
 
         return removeAgent;
       } catch (error) {
+        console.log(error);
         throw new Error("Serever Issue While Removing the Agent");
       }
     }),
@@ -148,9 +149,8 @@ export const agentsRoute = createTRPCRouter({
             userId: ctx.session.user.id,
           },
           data: {
-              name: input.name,
-              instructions: input.instructions,
-              
+            name: input.name,
+            instructions: input.instructions,
           },
         });
 
@@ -162,6 +162,7 @@ export const agentsRoute = createTRPCRouter({
 
         return updateAgent;
       } catch (error) {
+        console.log(error);
         throw new Error("Serever Issue While updating the Agent");
       }
     }),
