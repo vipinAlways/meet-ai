@@ -8,9 +8,9 @@ import type { TextMessage } from "@inngest/agent-kit";
 export const meetingProcess = inngest.createFunction(
   { id: "meetings/processing" },
   { event: "meetings/processing" },
-  async ({ event, step }) => {
+  async ({ step, event }) => {
     const response = await step.run("fetch-transcript", async () => {
-      return fetch(event.data.transcriptUrl as URL).then((res) => res.text());
+      return fetch(new URL(event.data.transcriptUrl)).then((res) => res.text());
     });
 
     const transcript = await step.run("parse-transcript", async () => {

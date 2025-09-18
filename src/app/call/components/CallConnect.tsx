@@ -32,6 +32,7 @@ export const CallConnect = ({
   const [call, setCall] = useState<Call>();
   const { mutateAsync: generateToken } =
     api.meetings.generateToken.useMutation();
+
   useEffect(() => {
     const client_ = new StreamVideoClient({
       apiKey: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY!,
@@ -74,28 +75,30 @@ export const CallConnect = ({
           setCall(call_);
         }
       } catch (err) {
-        console.error("Failed to join call:", err);
         try {
           await call_.endCall();
         } catch (endErr) {
-          console.error("Error ending call after failure:", endErr);
+          throw new Error("server error", { cause: endErr });
+        } finally {
+          await call_.endCall();
+          throw new Error("Failed to join call", { cause: err });
         }
       }
     };
 
-    setupCall();
+    void setupCall();
 
     return () => {
       isMounted = false;
 
-      (async () => {
+      void (async () => {
         try {
           if (call_.state.callingState !== CallingState.LEFT) {
             await call_.leave();
             await call_.endCall();
           }
         } catch (err) {
-          console.error("Error cleaning up call:", err);
+          throw new Error("Error cleaning up call:", { cause: err });
         } finally {
           setCall(undefined);
         }

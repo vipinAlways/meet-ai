@@ -336,8 +336,10 @@ export const meetingsRoute = createTRPCRouter({
           });
 
         return removeMeeting;
-      } catch (error: string | any) {
-        throw new Error("Server Issue While updating the Agent", error);
+      } catch (error) {
+        throw new Error("Server Issue While updating the Agent", {
+          cause: error,
+        });
       }
     }),
   generateToken: protectedProcedure.mutation(async ({ ctx }) => {
