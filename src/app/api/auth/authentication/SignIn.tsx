@@ -17,12 +17,9 @@ const SignIn = () => {
     email: "",
     disable: false,
   });
- const userQuery = api.user.existingUser.useQuery(
-    undefined,
-    {
-      enabled: !!authProp.email && authProp.email.includes("@"),
-    }
-  );
+  const userQuery = api.user.existingUser.useQuery(undefined, {
+    enabled: !!authProp.email && authProp.email.includes("@"),
+  });
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -33,7 +30,7 @@ const SignIn = () => {
       }
 
       const isExistingUser = userQuery.data;
-
+      setAuthProp((prev) => ({ ...prev, disable: true }));
       await signIn("nodemailer", {
         email: authProp.email,
         callbackUrl: isExistingUser ? "/" : "/profile",
@@ -101,6 +98,7 @@ const SignIn = () => {
             width={120}
             height={60}
             className="object-cover"
+            loading="lazy"
           />
           <span className="text-3xl text-zinc-100">Meet.AI</span>
         </div>

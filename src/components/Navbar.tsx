@@ -42,7 +42,7 @@ export const Navbar = () => {
 
   return (
     <Sidebar>
-      <SidebarHeader className="text-sidebar-accent-foreground ">
+      <SidebarHeader className="text-sidebar-accent-foreground">
         <Link
           href={"/"}
           className="flex items-center gap-4 border-b-2 pt-2 pb-4"
@@ -53,6 +53,7 @@ export const Navbar = () => {
             width={36}
             height={36}
             className="object-cover"
+            loading="lazy"
           />
           <p className="text-2xl font-semibold">Meet.AI</p>
         </Link>
@@ -118,4 +119,3 @@ export const Navbar = () => {
     </Sidebar>
   );
 };
-

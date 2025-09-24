@@ -16,7 +16,13 @@ const CallActive = ({ meetingName, onLeave }: Props) => {
           href={"/"}
           className="flex w-fit items-center justify-center rounded-full bg-zinc-300 p-1"
         >
-          <Image src={"/svgs/logo.svg"} height={22} width={22} alt="logo" />
+          <Image
+            src={"/svgs/logo.svg"}
+            height={22}
+            width={22}
+            alt="logo"
+            loading="lazy"
+          />
         </Link>
         <h4 className="text-base">{meetingName}</h4>
       </div>
@@ -27,6 +33,6 @@ const CallActive = ({ meetingName, onLeave }: Props) => {
       </div>
     </div>
   );
-};  
+};
 
 export default CallActive;
