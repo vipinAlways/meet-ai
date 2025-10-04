@@ -5,12 +5,19 @@ import type { StreamTranscriptItem } from "~/lib/type";
 import { summarizer } from "~/lib/agent";
 import type { TextMessage } from "@inngest/agent-kit";
 
+interface Event {
+  data: {
+    transcriptUrl: string;
+    meetingId: string;
+  };
+}
 export const meetingProcess = inngest.createFunction(
   { id: "meetings/processing" },
   { event: "meetings/processing" },
   async ({ step, event }) => {
+    const { data } = event as Event;
     const response = await step.run("fetch-transcript", async () => {
-      return fetch(new URL(event.data.transcriptUrl)).then((res) => res.text());
+      return fetch(new URL(data.transcriptUrl)).then((res) => res.text());
     });
 
     const transcript = await step.run("parse-transcript", async () => {
@@ -62,7 +69,7 @@ export const meetingProcess = inngest.createFunction(
 
     await step.run("save-summary", async () => {
       await db.meetings.update({
-        where: { id: event.data.meetingId },
+        where: { id: data.meetingId },
         data: {
           status: "COMPLETED",
           summary: (output[0] as TextMessage).content as string,

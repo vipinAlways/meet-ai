@@ -9,7 +9,7 @@ const layout = ({ children }: { children: ReactNode }) => {
     <SidebarProvider>
       <>
         <Navbar />
-        <main className="bg-muted flex h-screen w-screen flex-col">
+        <main className="flex min-h-screen w-screen flex-col">
           <SearchBar />
           {children}
         </main>

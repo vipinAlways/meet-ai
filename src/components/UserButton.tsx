@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "~/components/ui/button";
 import {
@@ -105,17 +105,16 @@ export const UserButton = () => {
       <DropdownMenuTrigger className="border-border/20 flex w-full items-center justify-between gap-x-2 overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10">
         <div>
           {data.image ? (
-          <Avatar>
-            <AvatarImage src={data.image || ""} />
-          </Avatar>
-        ) : (
-          <GeneratedAvatar
-            seed={data.name ?? "User"}
-            variant="initials"
-            className="mr-3 size-9 text-white"
-          />
-        )}
-
+            <Avatar>
+              <AvatarImage src={data.image || ""} />
+            </Avatar>
+          ) : (
+            <GeneratedAvatar
+              seed={data.name ?? "User"}
+              variant="initials"
+              className="mr-3 size-9 text-white"
+            />
+          )}
         </div>
         <div className="flex min-w-8 flex-1 flex-col gap-0.5 overflow-hidden text-left">
           <p className="w-full truncate text-sm"> {data.name ?? "User"}</p>

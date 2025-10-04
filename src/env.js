@@ -19,7 +19,7 @@ export const env = createEnv({
       .default("development"),
     OPENAI_API_KEY: z.string(),
     STREAM_VIDEO_API_KEY: z.string(),
-    STREAM_VIDEO_API_SECRET:z.string()
+    STREAM_VIDEO_API_SECRET: z.string(),
   },
 
   client: {
@@ -38,10 +38,9 @@ export const env = createEnv({
     EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT
       ? parseInt(process.env.EMAIL_SERVER_PORT)
       : undefined,
-    OPENAI_API_KEY:process.env.OPENAI_API_KEY,
-    STREAM_VIDEO_API_KEY:process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY,
-    STREAM_VIDEO_API_SECRET:process.env.NEXT_PUBLIC_STREAM_VIDEO_API_SECRET,
-
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    STREAM_VIDEO_API_KEY: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_KEY,
+    STREAM_VIDEO_API_SECRET: process.env.NEXT_PUBLIC_STREAM_VIDEO_API_SECRET,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

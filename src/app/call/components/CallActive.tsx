@@ -17,7 +17,7 @@ const CallActive = ({ meetingName, onLeave }: Props) => {
           className="flex w-fit items-center justify-center rounded-full bg-zinc-300 p-1"
         >
           <Image
-            src={"/svgs/logo.svg"}
+            src={"./svgs/logo.svg"}
             height={22}
             width={22}
             alt="logo"

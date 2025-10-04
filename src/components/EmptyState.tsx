@@ -9,7 +9,7 @@ interface Props {
 const EmptyState = ({
   description,
   title,
-  image = "/svg/empty.svg",
+  image = "./svg/empty.svg",
 }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center">
