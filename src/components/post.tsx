@@ -24,7 +24,7 @@ const CompPost = () => {
         </Link>
         <p className="flex flex-col items-center gap-1.5 text-center text-xl">
           Improve your communication, timing, and <br /> confidence with
-          AI-powered meeting simulations.
+          AI-powered meeting simulations.   
         </p>
       </div>
       <Feature />
