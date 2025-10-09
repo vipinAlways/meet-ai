@@ -13,8 +13,7 @@ const Meeting = () => {
   const router = useRouter();
   const [filters, setFilters] = useMeetingFilters();
 
-
-  const [data] = api.meetings.getMany.useSuspenseQuery({...filters});
+  const [data] = api.meetings.getMany.useSuspenseQuery({ ...filters });
   if (data.items.length === 0) {
     return (
       <EmptyState

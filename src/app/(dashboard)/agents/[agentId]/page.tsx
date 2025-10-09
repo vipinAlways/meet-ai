@@ -7,7 +7,7 @@ import { HydrationBoundary } from "@tanstack/react-query";
 interface Props {
   params: Promise<{ agentId: string }>;
 }
-const page = async ({ params }: Props) => {
+const Page = async ({ params }: Props) => {
   const { agentId } = await params;
 
   const queryClient = await api.agents.getOne.prefetch({ id: agentId });
@@ -29,4 +29,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default Page;

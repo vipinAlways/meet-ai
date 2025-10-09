@@ -12,7 +12,7 @@ interface Props {
   searchParams: Promise<SearchParams>;
 }
 
-const page = async ({ searchParams }: Props) => {
+const Page = async ({ searchParams }: Props) => {
   const session = await auth();
   const filters = await loadSearchParams(searchParams);
 
@@ -45,4 +45,4 @@ const page = async ({ searchParams }: Props) => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,4 +1,5 @@
-import CompPost from "~/components/post";
+
+import CompPost from "~/components/Post";
 import { HydrateClient } from "~/trpc/server";
 
 export default async function Home() {

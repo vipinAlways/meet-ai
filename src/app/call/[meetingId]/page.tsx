@@ -8,7 +8,7 @@ import CallView from "../components/CallView";
 interface Props {
   params: Promise<{ meetingId: string }>;
 }
-const page = async ({ params }: Props) => {
+const Page = async ({ params }: Props) => {
   const { meetingId } = await params;
 
   const session = await auth();
@@ -33,4 +33,4 @@ const page = async ({ params }: Props) => {
   );
 };
 
-export default page;
+export default Page;

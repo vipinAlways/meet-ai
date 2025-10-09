@@ -8,7 +8,7 @@ import { loadSearchParams } from "./params";
 import { HydrationBoundary } from "@tanstack/react-query";
 import { auth } from "~/server/auth";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
+
 interface Props {
   searchParams: Promise<SearchParams>;
 }

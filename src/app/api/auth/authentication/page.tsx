@@ -16,5 +16,5 @@ const page: React.FC = async () => {
   );
 };
 
-export default page;
+export default Page;
   

@@ -124,7 +124,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
           <EmptyState
             title="Meeting cancelled"
             description="This meeting was cancelled"
-            image="/svg/cancel.svg"
+            image="/svgs/cancellled.svg"
           />
         </div>
       )}
@@ -133,7 +133,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
           <EmptyState
             title="Meeting is Active"
             description="Meeting will end once all participants have left"
-            image="/svg/upcoming.svg"
+            image=".\svgs\empty.svg"
           />
 
           <div className="flex w-full items-center">
@@ -157,7 +157,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
             <EmptyState
               title="Not started Yet"
               description="Once you start this meeting, a summary will apear here"
-              image="/svg/upcoming.svg"
+              image="\svgs\empty.svg"
             />
 
             <div className="flex w-full flex-col-reverse items-center gap-2 lg:flex-row lg:justify-center">
@@ -189,7 +189,7 @@ const MeetingId = ({ meetingId }: { meetingId: string }) => {
           <EmptyState
             title="Meeting completed"
             description="This meeting was completed, a summary will appear soon"
-            image="/svg/processing.svg"
+            image="/svgs/processing.svg"
           />
         </div>
       )}

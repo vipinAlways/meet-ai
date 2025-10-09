@@ -1,16 +1,20 @@
 "use client";
-import { useSession } from "next-auth/react";
-import React from "react";
+
+import React, { lazy } from "react";
 import Link from "next/link";
 import { Rocket } from "lucide-react";
-import Testimonials from "./Testimonials";
+
 import Feature from "./Feature";
-import HowWork from "./HowWork";
+
+import Footer from "./Footer";
+
+const LazyTestimonials = lazy(() => import("./Testimonials"));
+const LazyHowWork = lazy(() => import("./HowWork"));
 
 const CompPost = () => {
-    return (
-    <div className="space-y-16 p-4">
-      <div className="mt-28 flex h-1/4 flex-col items-center gap-5">
+  return (
+    <div className="relative w-full space-y-10 p-4">
+      <div className="mt-28 flex h-1/5 flex-col items-center gap-5">
         <h1 className="w-full text-center text-5xl tracking-tight">
           <strong className="">
             Master Your nervousness <br /> with Real-Time Practice
@@ -24,13 +28,14 @@ const CompPost = () => {
         </Link>
         <p className="flex flex-col items-center gap-1.5 text-center text-xl">
           Improve your communication, timing, and <br /> confidence with
-          AI-powered meeting simulations.   
+          AI-powered meeting simulations.
         </p>
       </div>
       <Feature />
 
-      <HowWork/>
-      <Testimonials />
+      <LazyHowWork />
+      <LazyTestimonials />
+      <Footer />
     </div>
   );
 };

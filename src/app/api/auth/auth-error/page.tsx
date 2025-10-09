@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { RxCross2 } from "react-icons/rx";
 
-const page = () => {
+const Page = () => {
   return (
     <div className="flex h-[50vh] w-full items-center justify-center">
       <div className="flex h-fit max-w-xl flex-col items-center justify-center gap-4 rounded-lg bg-zinc-300 p-5 text-xl text-nowrap shadow-md transition-colors">
@@ -32,4 +32,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

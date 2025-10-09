@@ -2,7 +2,7 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { TiTick } from "react-icons/ti";
 
-const page = () => {
+const Page = () => {
   return (
     <div className="flex min-h-screen w-full items-center justify-center ">
       <div className="flex h-fit max-w-xl flex-col items-center justify-center gap-4 rounded-lg p-5 text-xl text-nowrap shadow-md transition-colors bg-zinc-300 ">
@@ -31,4 +31,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
