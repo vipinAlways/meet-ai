@@ -2,7 +2,6 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-
 export const User = createTRPCRouter({
   newUser: publicProcedure
     .input(
@@ -28,25 +27,27 @@ export const User = createTRPCRouter({
         throw new Error("Failed to create user");
       }
     }),
-  existingUser: publicProcedure
- 
-  .query(async ({ ctx }) => {
-   try {
-     const existingUser = await ctx.db.user.findFirst({
-      where: { id: ctx.session?.user.id },
+  existingUser: publicProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session?.user?.id;
+
+    if (!userId) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "User not authenticated",
+      });
+    }
+
+    const existingUser = await ctx.db.user.findUnique({
+      where: { id: userId },
     });
 
-    if (existingUser) {
-      return existingUser;
-    } else {
-       throw new TRPCError({
-        code:"NOT_FOUND",
-        message:"Not able to find user"
-       });
+    if (!existingUser) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "User not found in database",
+      });
     }
-   } catch (error) {
-     console.error("Error checking existing user:", error);
-     throw new Error("Failed to check existing user");
-   }
-  })
+
+    return existingUser;
+  }),
 });

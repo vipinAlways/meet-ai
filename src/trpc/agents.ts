@@ -67,11 +67,19 @@ export const agentsRoute = createTRPCRouter({
 
         const totalPages = Math.ceil(total / pageSize);
 
-        return {
-          items: data,
-          total,
-          totalPages,
-        };
+        if (data.length > 0) {
+          return {
+            items: data,
+            total,
+            totalPages,
+          };
+        } else {
+          return {
+            items: [],
+            total: 0,
+            totalPages: 0,
+          };
+        }
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
